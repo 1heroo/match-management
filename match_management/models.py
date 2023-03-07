@@ -15,7 +15,6 @@ class Product(Base):
 
 class MatchedProduct(Base):
     __tablename__ = 'matched_products'
-
     id = sa.Column(sa.Integer, primary_key=True)
     nm_id = sa.Column(sa.Integer)
     title = sa.Column(sa.String)

@@ -13,7 +13,7 @@ class MatchedProductAdmin(ModelView, model=MatchedProduct):
 
 
 class ChildMatchedProductAdmin(ModelView, model=ChildMatchedProduct):
-    column_list = ['nm_id', 'title', 'vendor_name', 'vendor_code', 'is_correct', 'product', 'parent_nm_id']
+    column_list = ['nm_id', 'title', 'vendor_name', 'vendor_code', 'is_correct', 'product', 'parent_id']
 
 
 class BrandAdmin(ModelView, model=Brand):
