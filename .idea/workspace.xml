@@ -5,19 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7aee828f-5334-4b95-ad74-873aa1cf42a4" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/db.py" beforeDir="false" afterPath="$PROJECT_DIR$/db/db.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/match_management/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/match_management/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/match_management/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/match_management/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/match_management/queries.py" beforeDir="false" afterPath="$PROJECT_DIR$/match_management/queries.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/match_management/services.py" beforeDir="false" afterPath="$PROJECT_DIR$/match_management/services.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/match_management/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/match_management/utils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/price_management/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/price_management/routes.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/price_management/services.py" beforeDir="false" afterPath="$PROJECT_DIR$/price_management/services.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/price_management/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/price_management/utils.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

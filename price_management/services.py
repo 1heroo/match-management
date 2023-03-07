@@ -20,7 +20,7 @@ class PMServices:
 
         matched_products = await self.matched_product_queries.fetch_all()
         matched_products = matched_products[-1:]
-
+        print(matched_products)
         for the_product in matched_products:
             brand = await self.brand_queries.get_brand_by_brand_id(
                 brand_id=the_product.the_product['detail'].get('brandId'), included_to_pm=True)
