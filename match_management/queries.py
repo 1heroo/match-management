@@ -65,3 +65,16 @@ class ChildMatchedProductQueries(BaseQueries):
 
     model = ChildMatchedProduct
 
+    async def fetch_all(self):
+        async with async_session() as session:
+            result = await session.execute(
+                sa.select(self.model)
+            )
+            return result.scalars().all()
+
+    async def get_or_create(self, child_matched_products):
+        saved_child_matched_products = await self.fetch_all()
+        all_nms = [saved_child_matched_product for saved_child_matched_product in saved_child_matched_products]
+        to_be_saved = [child_matched_product for child_matched_product in child_matched_products
+                       if child_matched_product.nm_id not in all_nms]
+        await self.save_in_db(instances=to_be_saved, many=True)

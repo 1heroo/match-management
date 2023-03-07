@@ -1,6 +1,6 @@
 import asyncio
 
-from match_management.queries import ProductQueries, MatchedProductQueries
+from match_management.queries import ProductQueries, MatchedProductQueries, ChildMatchedProductQueries
 from match_management.utils import MatchUtils
 from match_management.models import MatchedProduct
 
@@ -78,6 +78,7 @@ class MatchServices:
         self.filter_lvl = FilterLevels()
         self.product_queries = ProductQueries()
         self.matched_product_queries = MatchedProductQueries()
+        self.child_matched_product_queries = ChildMatchedProductQueries()
 
     async def find_matches(self, df, article_column, min_price_column):
         for index in df.index:
@@ -91,9 +92,11 @@ class MatchServices:
                 the_product=the_product, matched_products=matched, min_price=min_price)
 
             await self.matched_product_queries.save_or_update(matched_products=[the_product])
-            await self.product_queries.save_in_db(instances=matched_products, many=True)
+
+            await self.child_matched_product_queries.get_or_create(child_matched_products=matched_products)
+
             await self.product_queries.delete_by_nms([
-                product['card']['nm_id'] for product in matched
+                product.nm_id for product in matched_products
             ])
 
     async def match_management(self, article):
