@@ -150,7 +150,7 @@ class MatchUtils:
                 vendor_code=matched_product['card'].get('vendor_code'),
                 product=matched_product,
                 is_correct=True,
-                parent_nm_id=the_product_to_be_saved.nm_id
+                parent_id=the_product_to_be_saved.nm_id
             ))
         return the_product_to_be_saved, to_be_saved
 
