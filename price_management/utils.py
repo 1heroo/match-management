@@ -24,6 +24,9 @@ class PMUtils:
     @staticmethod
     async def calculate_back_price(price, clientSale, basicSale):
 
+        if not basicSale:
+            basicSale = 0
+
         first_price = price / (100 - clientSale) * 100
         price = math.ceil(first_price / (100 - basicSale) * 100)
         return price
