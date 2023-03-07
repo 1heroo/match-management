@@ -133,21 +133,21 @@ class MatchUtils:
     async def prepare_matched_products(the_product, matched_products, min_price):
         to_be_saved = []
         the_product_to_be_saved = MatchedProduct(
-            nm_id=the_product['card']['nm_id'],
-            title=the_product['card']['imt_name'],
-            subj_name=the_product['card']['subj_name'],
-            subj_root_name=the_product['card']['subj_root_name'],
-            vendor_code=the_product['card']['vendor_code'],
+            nm_id=the_product['card'].get('nm_id'),
+            title=the_product['card'].get('imt_name'),
+            subj_name=the_product['card'].get('subj_name'),
+            subj_root_name=the_product['card'].get('subj_root_name'),
+            vendor_code=the_product['card'].get('vendor_code'),
             min_price=min_price,
             the_product=the_product,
         )
 
         for matched_product in matched_products:
             to_be_saved.append(ChildMatchedProduct(
-                nm_id=matched_product['card']['nm_id'],
-                title=matched_product['card']['imt_name'],
-                vendor_name=matched_product['seller']['supplierName'],
-                vendor_code=matched_product['card']['vendor_code'],
+                nm_id=matched_product['card'].get('nm_id'),
+                title=matched_product['card'].get('imt_name'),
+                vendor_name=matched_product['seller'].get('supplierName'),
+                vendor_code=matched_product['card'].get('vendor_code'),
                 product=matched_product,
                 is_correct=True,
                 parent_nm_id=the_product_to_be_saved.nm_id

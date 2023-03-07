@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="7aee828f-5334-4b95-ad74-873aa1cf42a4" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/match_management/queries.py" beforeDir="false" afterPath="$PROJECT_DIR$/match_management/queries.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/match_management/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/match_management/routes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/match_management/services.py" beforeDir="false" afterPath="$PROJECT_DIR$/match_management/services.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/match_management/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/match_management/utils.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="FastAPI main" />
+        <option value="FastAPI test_main" />
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2MSiYRjrXXMl0AqGKlPaSSSiNiV" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/wb services/march/products-match&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  },
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;postgresql&quot;
+    ]
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\wb services\march\products-match" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="products-match" type="Python.FastAPI">
+      <option name="file" value="$PROJECT_DIR$/main.py" />
+      <module name="products-match" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="7aee828f-5334-4b95-ad74-873aa1cf42a4" name="Changes" comment="" />
+      <created>1677767432224</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1677767432224</updated>
+      <workItem from="1677767442046" duration="15034000" />
+      <workItem from="1677822290952" duration="2050000" />
+      <workItem from="1677841825104" duration="1195000" />
+      <workItem from="1677845636915" duration="1960000" />
+      <workItem from="1677848274925" duration="2979000" />
+      <workItem from="1677856383361" duration="148000" />
+      <workItem from="1677868112338" duration="9217000" />
+      <workItem from="1677939258427" duration="20000" />
+      <workItem from="1678103069313" duration="4391000" />
+      <workItem from="1678110177379" duration="2852000" />
+      <workItem from="1678133748813" duration="4407000" />
+      <workItem from="1678186082673" duration="29000" />
+      <workItem from="1678186283735" duration="3413000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
