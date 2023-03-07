@@ -5,10 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7aee828f-5334-4b95-ad74-873aa1cf42a4" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/41a9301c-1f87-4000-8631-036c6e9ef450.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/41a9301c-1f87-4000-8631-036c6e9ef450.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/41a9301c-1f87-4000-8631-036c6e9ef450/storage_v2/_src_/database/match_db.OIWyEQ/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/41a9301c-1f87-4000-8631-036c6e9ef450/storage_v2/_src_/database/match_db.OIWyEQ/schema/public.abK9xQ.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/match_management/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/match_management/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/match_management/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/match_management/admin.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
