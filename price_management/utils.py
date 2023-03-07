@@ -23,9 +23,7 @@ class PMUtils:
 
     @staticmethod
     async def calculate_back_price(price, clientSale, basicSale):
-
-        if not basicSale:
-            basicSale = 31
+        basicSale = 31
 
         first_price = price / (100 - clientSale) * 100
         price = math.ceil(first_price / (100 - basicSale) * 100)
@@ -53,4 +51,20 @@ class WbAPIUtils:
                 chunk_prices = prices[start: start + 1000] if i != times else prices[start: len_prices]
                 start += 1000
                 async with session.post(url=url, json=chunk_prices) as response:
+                    print(await response.text())
+
+    @staticmethod
+    async def update_discounts(discounts, token_auth):
+        url = 'https://suppliers-api.wildberries.ru/public/api/v1/updateDiscounts'
+
+        async with aiohttp.ClientSession(trust_env=True, headers=token_auth) as session:
+            len_discounts = len(discounts)
+            times = len_discounts // 1000
+            start = 0
+
+            for i in range(times + 1):
+                chunk_discounts = discounts[start: start + 1000] if i != times else discounts[start: len_discounts]
+                start += 1000
+
+                async with session.post(url=url, json=chunk_discounts) as response:
                     print(await response.text())

@@ -65,4 +65,12 @@ class PMServices:
                 token_auth=wb_standard_auth
                 )
 
+            await self.wb_api_utils.update_discounts(
+                discounts=[{
+                    'nm': the_product.nm_id,
+                    'discount': 31
+                }],
+                token_auth=wb_standard_auth
+            )
+
 
