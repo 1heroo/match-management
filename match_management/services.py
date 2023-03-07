@@ -87,8 +87,10 @@ class MatchServices:
 
             the_product, matched = await self.match_management(article=article)
 
-            matched_products = await self.match_utils.prepare_matched_products(
+            the_product, matched_products = await self.match_utils.prepare_matched_products(
                 the_product=the_product, matched_products=matched, min_price=min_price)
+
+            await self.matched_product_queries.save_or_update(matched_products=[the_product])
             await self.product_queries.save_in_db(instances=matched_products, many=True)
             await self.product_queries.delete_by_nms([
                 product['card']['nm_id'] for product in matched

@@ -132,7 +132,7 @@ class MatchUtils:
     @staticmethod
     async def prepare_matched_products(the_product, matched_products, min_price):
         to_be_saved = []
-        the_product = MatchedProduct(
+        the_product_to_be_saved = MatchedProduct(
             nm_id=the_product['card']['nm_id'],
             title=the_product['card']['imt_name'],
             subj_name=the_product['card']['subj_name'],
@@ -141,7 +141,7 @@ class MatchUtils:
             min_price=min_price,
             the_product=the_product,
         )
-        to_be_saved.append(the_product)
+
         for matched_product in matched_products:
             to_be_saved.append(ChildMatchedProduct(
                 nm_id=matched_product['card']['nm_id'],
@@ -152,7 +152,7 @@ class MatchUtils:
                 is_correct=True,
                 parent_nm_id=the_product.nm_id
             ))
-        return to_be_saved
+        return the_product_to_be_saved, to_be_saved
 
 
 def make_head(article: int):

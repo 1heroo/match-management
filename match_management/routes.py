@@ -16,7 +16,7 @@ product_queries = ProductQueries()
 @router.post('/launch-matching')
 async def main(file: bytes = File()):
     df = pd.read_excel(file)
-    article_column = df['Номенклатура'].name
+    article_column = df['Артикул WB'].name
     min_price_column = df['Минимальная цена'].name
     await match_services.find_matches(df=df, article_column=article_column, min_price_column=min_price_column)
     return
