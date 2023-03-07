@@ -37,7 +37,7 @@ class ChildMatchedProduct(Base):
     vendor_code = sa.Column(sa.String)
     is_correct = sa.Column(sa.Boolean)
     product = sa.Column(JSONB)
-    parent_nm_id = sa.Column(sa.Integer, sa.ForeignKey('matched_products.id'))
+    parent_id = sa.Column(sa.Integer, sa.ForeignKey('matched_products.id'))
     parent = relationship('MatchedProduct', back_populates='matched_products')
 
 

@@ -5,16 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7aee828f-5334-4b95-ad74-873aa1cf42a4" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/migrations/versions/06e8c7b80db0_decompsed.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/migrations/versions/761acfaa9b9b_control_migrations.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/migrations/versions/80a0e470ca62_initial.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/migrations/versions/9b8dbd178a95_initial.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/migrations/versions/cccfb4f47228_added_new_columns_in_matched_product_.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/migrations/versions/f845e149a24a_changed_columns_and_added_new_ones.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/migrations/versions/fcb5b57a1a68_added_new_model_changed_columns.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/match_management/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/match_management/models.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
