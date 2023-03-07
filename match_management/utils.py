@@ -90,6 +90,26 @@ class MatchUtils:
         output_data = [item for item in output_data if not isinstance(item, Exception) and item]
         return output_data
 
+    async def get_detail_by_nms(self, nms):
+        output_data = []
+        tasks = []
+        count = 1
+
+        for nm in nms:
+            task = asyncio.create_task(self.get_product_data(article=nm))
+            tasks.append(task)
+            count += 1
+
+            if count % 50 == 0:
+                print(count, 'product data')
+                output_data += await asyncio.gather(*tasks, return_exceptions=True)
+                tasks = []
+
+        output_data += await asyncio.gather(*tasks, return_exceptions=True)
+        output_data = [item for item in output_data if not isinstance(item, Exception) and item]
+        return output_data
+
+
     async def get_identical(self, article):
         url = f'https://identical-products.wildberries.ru/api/v1/identical?nmID={article}'
         return await self.make_get_request(url=url, headers={})
@@ -130,8 +150,7 @@ class MatchUtils:
         return output_data
 
     @staticmethod
-    async def prepare_matched_products(the_product, matched_products, min_price):
-        to_be_saved = []
+    async def prepare_matched_product(the_product, min_price):
         the_product_to_be_saved = MatchedProduct(
             nm_id=the_product['card'].get('nm_id'),
             title=the_product['card'].get('imt_name'),
@@ -141,8 +160,13 @@ class MatchUtils:
             min_price=min_price,
             the_product=the_product,
         )
+        return the_product_to_be_saved
 
-        for matched_product in matched_products:
+    @staticmethod
+    async def prepare_child_matched_products(parent_id, child_matched_products):
+        to_be_saved = []
+
+        for matched_product in child_matched_products:
             to_be_saved.append(ChildMatchedProduct(
                 nm_id=matched_product['card'].get('nm_id'),
                 title=matched_product['card'].get('imt_name'),
@@ -150,9 +174,9 @@ class MatchUtils:
                 vendor_code=matched_product['card'].get('vendor_code'),
                 product=matched_product,
                 is_correct=True,
-                parent_id=the_product_to_be_saved.nm_id
+                parent_id=parent_id
             ))
-        return the_product_to_be_saved, to_be_saved
+        return to_be_saved
 
 
 def make_head(article: int):

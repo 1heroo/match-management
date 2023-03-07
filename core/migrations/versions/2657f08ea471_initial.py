@@ -1,8 +1,8 @@
 """initial
 
-Revision ID: 6af0aab5f24c
+Revision ID: 2657f08ea471
 Revises: 
-Create Date: 2023-03-07 19:48:21.016589
+Create Date: 2023-03-07 22:58:47.955473
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
-revision = '6af0aab5f24c'
+revision = '2657f08ea471'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -22,6 +22,7 @@ def upgrade() -> None:
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('title', sa.String(), nullable=True),
     sa.Column('percentage', sa.Integer(), nullable=True),
+    sa.Column('brand_id', sa.Integer(), nullable=True),
     sa.Column('min_step', sa.Integer(), nullable=True),
     sa.Column('is_included_to_pm', sa.Boolean(), nullable=True),
     sa.PrimaryKeyConstraint('id')
@@ -51,8 +52,8 @@ def upgrade() -> None:
     sa.Column('vendor_code', sa.String(), nullable=True),
     sa.Column('is_correct', sa.Boolean(), nullable=True),
     sa.Column('product', postgresql.JSONB(astext_type=sa.Text()), nullable=True),
-    sa.Column('parent_nm_id', sa.Integer(), nullable=True),
-    sa.ForeignKeyConstraint(['parent_nm_id'], ['matched_products.id'], ),
+    sa.Column('parent_id', sa.Integer(), nullable=True),
+    sa.ForeignKeyConstraint(['parent_id'], ['matched_products.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     # ### end Alembic commands ###

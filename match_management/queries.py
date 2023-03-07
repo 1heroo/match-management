@@ -1,6 +1,6 @@
 from db.db import async_session
 from db.queries import BaseQueries
-from match_management.models import Product, MatchedProduct, ChildMatchedProduct
+from match_management.models import Product, MatchedProduct, ChildMatchedProduct, Brand
 import sqlalchemy as sa
 
 
@@ -46,19 +46,18 @@ class MatchedProductQueries(BaseQueries):
             )
             return result.scalars().first()
 
-    async def save_or_update(self, matched_products):
+    async def save_or_update(self, the_product):
+        product = None
         saved_matched_products = await self.fetch_all()
-        all_nms = [saved_matched_product.nm_id for saved_matched_product in saved_matched_products]
-        new_instances = [matched_product for matched_product in matched_products if matched_product.nm_id not in all_nms]
-        db_instances = []
-
         for saved_matched_product in saved_matched_products:
-            for matched_product in matched_products:
-                if saved_matched_product.nm_id == matched_product.nm_id:
-                    saved_matched_product.min_price = matched_product.min_price
-                    db_instances.append(saved_matched_product)
+            if the_product.nm_id == saved_matched_product.nm_id:
+                saved_matched_product.min_price = the_product.min_price
+                product = saved_matched_product
 
-        await self.save_in_db(instances=db_instances + new_instances, many=True)
+        if not product:
+            product = the_product
+        await self.save_in_db(instances=product)
+        return product
 
 
 class ChildMatchedProductQueries(BaseQueries):
@@ -78,3 +77,33 @@ class ChildMatchedProductQueries(BaseQueries):
         to_be_saved = [child_matched_product for child_matched_product in child_matched_products
                        if child_matched_product.nm_id not in all_nms]
         await self.save_in_db(instances=to_be_saved, many=True)
+
+    async def get_children_by_parent_id(self, parent_id):
+        async with async_session() as session:
+            result = await session.execute(
+                sa.select(self.model).where(self.model.parent_id == parent_id)
+            )
+            return result.scalars().all()
+
+class BrandQueries(BaseQueries):
+
+    model = Brand
+
+    async def fetch_all(self):
+        async with async_session() as session:
+            result = await session.execute(
+                sa.select(self.model)
+            )
+            return result.scalars().all()
+
+    async def get_brand_by_brand_id(self, brand_id, included_to_pm=False):
+        async with async_session() as session:
+            if included_to_pm:
+                result = await session.execute(
+                    sa.select(self.model).where(self.model.brand_id == brand_id).where(self.model.is_included_to_pm)
+                )
+            else:
+                result = await session.execute(
+                    sa.select(self.model).where(self.model.brand_id == brand_id)
+                )
+            return result.scalars().first()
