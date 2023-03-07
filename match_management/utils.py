@@ -163,7 +163,7 @@ class MatchUtils:
         return the_product_to_be_saved
 
     @staticmethod
-    async def prepare_child_matched_products(parent_id, child_matched_products):
+    async def prepare_child_matched_products(the_product, child_matched_products):
         to_be_saved = []
 
         for matched_product in child_matched_products:
@@ -171,10 +171,12 @@ class MatchUtils:
                 nm_id=matched_product['card'].get('nm_id'),
                 title=matched_product['card'].get('imt_name'),
                 vendor_name=matched_product['seller'].get('supplierName'),
+                price=int(matched_product['detail']['salePriceU'] / 100),
+                parent_nm_id=the_product.nm_id,
                 vendor_code=matched_product['card'].get('vendor_code'),
                 product=matched_product,
                 is_correct=True,
-                parent_id=parent_id
+                parent_id=the_product.id,
             ))
         return to_be_saved
 

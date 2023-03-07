@@ -46,6 +46,8 @@ class ChildMatchedProduct(Base):
     title = sa.Column(sa.String)
     vendor_name = sa.Column(sa.String)
     vendor_code = sa.Column(sa.String)
+    price = sa.Column(sa.String)
+    parent_nm_id = sa.Column(sa.String)
     is_correct = sa.Column(sa.Boolean)
     product = sa.Column(JSONB)
     parent_id = sa.Column(sa.Integer, sa.ForeignKey('matched_products.id'))

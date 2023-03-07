@@ -9,12 +9,13 @@ class ProductAdmin(ModelView, model=Product):
 
 
 class MatchedProductAdmin(ModelView, model=MatchedProduct):
-    column_list = ['nm_id', 'title', 'subj_name', 'subj_root_name', 'min_price', 'vendor_code', 'the_product']
+    column_list = ['nm_id', 'title', 'subj_name', 'subj_root_name', 'min_price', 'vendor_code']
 
 
 class ChildMatchedProductAdmin(ModelView, model=ChildMatchedProduct):
-    column_list = ['nm_id', 'parent_id', 'title', 'vendor_name', 'vendor_code', 'is_correct', 'product']
-    column_searchable_list = ['parent_id']
+    page_size = 100
+    column_list = ['nm_id', 'parent_nm_id', 'title', 'price', 'vendor_name', 'vendor_code', 'is_correct']
+    column_searchable_list = ['parent_nm_id']
 
 
 class BrandAdmin(ModelView, model=Brand):

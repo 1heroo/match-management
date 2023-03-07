@@ -92,7 +92,7 @@ class MatchServices:
             the_product = await self.matched_product_queries.save_or_update(the_product=the_product)
 
             matched_products = await self.match_utils.prepare_child_matched_products(
-                child_matched_products=matched, parent_id=the_product.id)
+                child_matched_products=matched, the_product=the_product)
             await self.child_matched_product_queries.get_or_create(child_matched_products=matched_products)
 
             await self.product_queries.delete_by_nms([

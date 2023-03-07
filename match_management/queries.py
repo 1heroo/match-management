@@ -81,9 +81,10 @@ class ChildMatchedProductQueries(BaseQueries):
     async def get_children_by_parent_id(self, parent_id):
         async with async_session() as session:
             result = await session.execute(
-                sa.select(self.model).where(self.model.parent_id == parent_id)
+                sa.select(self.model).where(self.model.parent_id == parent_id).where(self.model.is_correct == True)
             )
             return result.scalars().all()
+
 
 class BrandQueries(BaseQueries):
 

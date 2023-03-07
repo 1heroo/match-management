@@ -1,6 +1,8 @@
 import json
 
 import uvicorn
+from starlette.requests import Request
+
 from db.db import async_engine
 from fastapi import FastAPI
 from sqladmin import Admin
@@ -24,6 +26,7 @@ admin.add_view(ProductAdmin)
 admin.add_view(MatchedProductAdmin)
 admin.add_view(ChildMatchedProductAdmin)
 admin.add_view(BrandAdmin)
+
 
 if __name__ == '__main__':
     uvicorn.run(
