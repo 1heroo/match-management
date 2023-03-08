@@ -39,6 +39,8 @@ async def get_child_matched_products(article_wb: int):
     child_matched_products = await child_matched_queries.get_children_by_parent_nm_id(parent_nm_id=article_wb)
 
     products = await match_utils.prepare_output(products=child_matched_products)
+
+    products = sorted(products, key=lambda item: item.get('price'))
     df = pd.DataFrame(products)
 
     output = io.BytesIO()
