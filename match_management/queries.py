@@ -67,7 +67,7 @@ class MatchedProductQueries(BaseQueries):
             return
 
         saved_checked_nms = the_product.checked_nms.get('checked_nms')
-        the_product.checked_nms = dict(checked_nms=json.loads(saved_checked_nms) + json.loads(checked_nms))
+        the_product.checked_nms = {'checked_nms': saved_checked_nms + checked_nms}
         await self.save_in_db(instances=the_product)
 
 
