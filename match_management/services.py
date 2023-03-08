@@ -83,12 +83,16 @@ class MatchServices:
         self.child_matched_product_queries = ChildMatchedProductQueries()
 
     async def find_matches(self, df, article_column, min_price_column):
+
+        nms = [product.nm_id for product in await self.product_queries.get_all_unmatched_products()]
+        products = await self.match_utils.get_detail_by_nms(nms=nms)
+
         for index in df.index:
             article = int(df[article_column][index])
             min_price = int(df[min_price_column][index])
             print(article)
 
-            the_product, matched = await self.match_management(article=article)
+            the_product, matched = await self.match_management(article=article, products=products)
 
             the_product = await self.match_utils.prepare_matched_product(the_product=the_product, min_price=min_price)
             the_product = await self.matched_product_queries.save_or_update(the_product=the_product)
@@ -102,8 +106,8 @@ class MatchServices:
                 product['card'].get('nm_id') for product in matched
             ])
 
-    async def match_management(self, article):
-        _, matched = await self.find_similar_to_article(article=article)
+    async def match_management(self, article, products):
+        _, matched = await self.find_similar_to_article(article=article, products=products)
 
         the_product, matched_by_wb_recs = await self.check_by_identical_nms(matched=matched, main_article=article)
         matched = await self.remove_duplicate_nms(products=matched + matched_by_wb_recs)
@@ -112,10 +116,6 @@ class MatchServices:
 
     async def find_similar_to_article(self, article, products=None):
         the_product = await self.match_utils.get_product_data(article=article)
-
-        if not bool(products):
-            nms = [product.nm_id for product in await self.product_queries.get_all_unmatched_products()]
-            products = await self.match_utils.get_detail_by_nms(nms=nms)
 
         output_data = []
 
