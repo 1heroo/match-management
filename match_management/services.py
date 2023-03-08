@@ -2,9 +2,11 @@ import asyncio
 
 import pandas as pd
 
+from core.settings import settings
 from match_management.queries import ProductQueries, MatchedProductQueries, ChildMatchedProductQueries
 from match_management.utils import MatchUtils
 from match_management.models import MatchedProduct
+from price_management.services import PMServices
 
 
 class FilterLevels:
@@ -81,6 +83,7 @@ class MatchServices:
         self.product_queries = ProductQueries()
         self.matched_product_queries = MatchedProductQueries()
         self.child_matched_product_queries = ChildMatchedProductQueries()
+        self.pm_services = PMServices()
 
     async def find_matches(self, df, article_column, min_price_column):
 
@@ -228,7 +231,10 @@ class MatchServices:
         await self.product_queries.save_in_db(instances=prepared_for_saving_products, many=True)
 
     async def remove_from_child_matched_products(self, df: pd.DataFrame):
+        wb_standard_auth = await self.pm_services.wb_api_utils.api_auth(token=settings.WB_STANDARD_API_TOKEN)
+
         products_to_be_removed = []
+        nm_id = df['article wb'][-1]
 
         for index in df.index:
             child_matched_product = await self.child_matched_product_queries.get_child_by_nm_id(
@@ -240,5 +246,9 @@ class MatchServices:
         prepared_for_saving_products = await self.match_utils.prepare_wb_products_for_saving(
             products=products_to_be_removed)
 
+        child_matched_product = await self.child_matched_product_queries.get_child_by_nm_id(nm_id=nm_id)
+        the_product = await self.matched_product_queries.get_product_by_nm(nm=child_matched_product.parent_nm_id)
+
+        await self.pm_services.update_price(the_product=the_product, wb_standard_auth=wb_standard_auth)
         await self.product_queries.save_in_db(instances=prepared_for_saving_products, many=True)
 

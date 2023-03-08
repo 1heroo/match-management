@@ -57,4 +57,5 @@ async def get_child_matched_products(article_wb: int):
 async def remove_from_matched_products(file: bytes = File()):
     df = pd.read_excel(file)
     await matched_services.remove_from_child_matched_products(df=df)
+
     return Response(status_code=status.HTTP_200_OK)

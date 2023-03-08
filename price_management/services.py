@@ -22,60 +22,61 @@ class PMServices:
         matched_products = matched_products[:1]
         print(matched_products)
         for the_product in matched_products:
-            brand = await self.brand_queries.get_brand_by_brand_id(
-                brand_id=the_product.the_product['detail'].get('brandId'), included_to_pm=True)
+            await self.update_price(the_product=the_product, wb_standard_auth=wb_standard_auth)
 
-            if not brand:
-                continue
-            the_product_json = await self.match_utils.get_product_data(article=the_product.nm_id)
+    async def update_price(self, the_product, wb_standard_auth):
+        brand = await self.brand_queries.get_brand_by_brand_id(
+            brand_id=the_product.the_product['detail'].get('brandId'), included_to_pm=True)
 
-            child_matched_products = await self.child_matched_products_queries.get_children_by_parent_id(
-                parent_id=the_product.id)
-            child_matched_products_json = await self.match_utils.get_detail_by_nms(
-                nms=[product.nm_id for product in child_matched_products])
+        if not brand:
+            return
+        the_product_json = await self.match_utils.get_product_data(article=the_product.nm_id)
 
-            min_product_json = await self.pm_utils.get_min_product(matched_products=child_matched_products_json)
+        child_matched_products = await self.child_matched_products_queries.get_children_by_parent_id(
+            parent_id=the_product.id)
+        child_matched_products_json = await self.match_utils.get_detail_by_nms(
+            nms=[product.nm_id for product in child_matched_products])
 
-            my_price = the_product_json['detail'].get('salePriceU') / 100
-            min_price = min_product_json['detail'].get('salePriceU') / 100
+        min_product_json = await self.pm_utils.get_min_product(matched_products=child_matched_products_json)
 
-            if not my_price and not min_price:
-                continue
+        my_price = the_product_json['detail'].get('salePriceU') / 100
+        min_price = min_product_json['detail'].get('salePriceU') / 100
 
-            print('my price', my_price)
-            print('min price', min_price)
+        if not my_price and not min_price:
+            return
 
-            if my_price < min_price:
-                print('SKIDYYYSH', '\n\n\n')
-                continue
+        print('my price', my_price)
+        print('min price', min_price)
 
-            if the_product.min_price < min_price:
-                calculated_price = await self.pm_utils.calculate_price(
-                    my_price=my_price, min_price=min_price, the_product_min_price=the_product.min_price,
-                    percentage=brand.percentage, min_step=brand.min_step
-                )
-            else:
-                calculated_price = the_product.min_price
+        if my_price < min_price:
+            print('SKIDYYYSH', '\n\n\n')
+            return
 
-            extended = the_product_json['detail'].get('extended')
-
-            price_before_discount = await self.pm_utils.calculate_back_price(
-                price=calculated_price, clientSale=extended.get('clientSale'), basicSale=extended.get('basicSale'))
-
-            await self.wb_api_utils.update_prices(
-                prices=[{
-                    'nmId': the_product.nm_id,
-                    'price': price_before_discount
-                    }],
-                token_auth=wb_standard_auth
-                )
-
-            await self.wb_api_utils.update_discounts(
-                discounts=[{
-                    'nm': the_product.nm_id,
-                    'discount': 31
-                }],
-                token_auth=wb_standard_auth
+        if the_product.min_price < min_price:
+            calculated_price = await self.pm_utils.calculate_price(
+                my_price=my_price, min_price=min_price, the_product_min_price=the_product.min_price,
+                percentage=brand.percentage, min_step=brand.min_step
             )
+        else:
+            calculated_price = the_product.min_price
 
+        extended = the_product_json['detail'].get('extended')
 
+        price_before_discount = await self.pm_utils.calculate_back_price(
+            price=calculated_price, clientSale=extended.get('clientSale'), basicSale=extended.get('basicSale'))
+
+        await self.wb_api_utils.update_prices(
+            prices=[{
+                'nmId': the_product.nm_id,
+                'price': price_before_discount
+            }],
+            token_auth=wb_standard_auth
+        )
+
+        await self.wb_api_utils.update_discounts(
+            discounts=[{
+                'nm': the_product.nm_id,
+                'discount': 31
+            }],
+            token_auth=wb_standard_auth
+        )
