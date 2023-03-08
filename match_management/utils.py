@@ -186,22 +186,26 @@ class MatchUtils:
         return to_be_saved
 
     @staticmethod
-    async def check_stocks(the_product):
-        qty = 0
+    async def check_stocks(products):
+        output_data = []
+        for the_product in products:
+            qty = 0
+            sizes = the_product['detail'].get('sizes')
+            if not sizes:
+                continue
 
-        sizes = the_product['detail'].get('sizes')
-        if not sizes:
-            return False
+            for size in sizes:
+                stocks = size.get('stocks')
+                if not stocks:
+                    continue
 
-        for size in sizes:
-            stocks = size.get('stocks')
-            if not stocks:
-                return False
+                for stock in stocks:
+                    qty += stock.get('qty')
 
-            for stock in stocks:
-                qty += stock.get('qty')
+            if qty > 0:
+                output_data.append(the_product)
 
-        return qty > 0
+        return output_data
 
 
 def make_head(article: int):

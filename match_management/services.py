@@ -90,15 +90,12 @@ class MatchServices:
 
             the_product, matched = await self.match_management(article=article)
 
-            if not the_product:
-                print('the product is without stocks\n')
-                continue
-
             the_product = await self.match_utils.prepare_matched_product(the_product=the_product, min_price=min_price)
             the_product = await self.matched_product_queries.save_or_update(the_product=the_product)
 
             matched_products = await self.match_utils.prepare_child_matched_products(
                 child_matched_products=matched, the_product=the_product)
+
             await self.child_matched_product_queries.get_or_create(child_matched_products=matched_products)
 
             await self.product_queries.delete_by_nms([
@@ -108,37 +105,21 @@ class MatchServices:
     async def match_management(self, article):
         _, matched = await self.find_similar_to_article(article=article)
 
-        if not matched:
-            return None, None
-        # prepared_matches = await self.match_utils.prepare_output(products=matched)
-
         the_product, matched_by_wb_recs = await self.check_by_identical_nms(matched=matched, main_article=article)
-        # prepared_matches_by_wb_recs = await self.match_utils.prepare_output(products=matched_by_wb_recs)
-
-        # uneeded
-        # matched_by_visual, _ = await self.check_by_visual_similar(main_article=article)
-        # prepared_matches_by_similar = await self.match_utils.prepare_output(products=matched_by_visual)
-
-        # matched_by_search, _ = await self.check_by_search(main_article=article)
-        # prepared_matches_by_search = await self.match_utils.prepare_output(products=matched_by_search)
-
-        # matched = prepared_matches + prepared_matches_by_wb_recs  + prepared_matches_by_similar + prepared_matches_by_search
-        # matched = await self.remove_duplicate_nms(products=matched)
         matched = await self.remove_duplicate_nms(products=matched + matched_by_wb_recs)
+
         return the_product, matched
 
     async def find_similar_to_article(self, article, products=None):
         the_product = await self.match_utils.get_product_data(article=article)
 
-        is_with_stocks = await self.match_utils.check_stocks(the_product=the_product)
-
-        if not is_with_stocks:
-            return None, None
-
         if not bool(products):
-            # products = await self.match_utils.get_products()
-            products = [product.product for product in await self.product_queries.get_all_unmatched_products()]
+            nms = [product.nm_id for product in await self.product_queries.get_all_unmatched_products()]
+            products = await self.match_utils.get_detail_by_nms(nms=nms)
+
         output_data = []
+
+        products = await self.match_utils.check_stocks(products=products)
 
         # FIRST LEVEL
         matched, products = self.filter_lvl.first_lvl(the_product=the_product, products=products)
