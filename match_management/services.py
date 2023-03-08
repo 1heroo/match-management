@@ -261,7 +261,7 @@ class MatchServices:
 
         prepared_for_saving_products = await self.match_utils.prepare_wb_products_for_saving(
             products=unmatched_products_to_be_saved)
-
+        print(prepared_for_saving_products)
         checked_nms = [product.nm_id for product in prepared_for_saving_products]
 
         await self.pm_services.update_price(the_product=the_product, wb_standard_auth=wb_standard_auth)

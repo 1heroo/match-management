@@ -27,13 +27,17 @@ class PMServices:
     async def update_price(self, the_product, wb_standard_auth):
         brand = await self.brand_queries.get_brand_by_brand_id(
             brand_id=the_product.the_product['detail'].get('brandId'), included_to_pm=True)
-
+        print(brand)
         if not brand:
             return
         the_product_json = await self.match_utils.get_product_data(article=the_product.nm_id)
 
         child_matched_products = await self.child_matched_products_queries.get_children_by_parent_id(
             parent_id=the_product.id)
+
+        if not child_matched_products:
+            return
+
         child_matched_products_json = await self.match_utils.get_detail_by_nms(
             nms=[product.nm_id for product in child_matched_products])
 
