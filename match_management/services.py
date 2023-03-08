@@ -231,7 +231,7 @@ class MatchServices:
         await self.product_queries.save_in_db(instances=prepared_for_saving_products, many=True)
 
     async def remove_from_child_matched_products(self, df: pd.DataFrame):
-        wb_standard_auth = await self.pm_services.wb_api_utils.api_auth(token=settings.WB_STANDARD_API_TOKEN)
+        wb_standard_auth = self.pm_services.wb_api_utils.api_auth(token=settings.WB_STANDARD_API_TOKEN)
 
         products_to_be_removed = []
         nm_id = df['article wb'][-1]
