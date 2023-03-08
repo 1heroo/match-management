@@ -159,7 +159,7 @@ class MatchUtils:
             brand=the_product['detail'].get('brand'),
             brand_id=the_product['detail'].get('brandId'),
             subj_root_name=the_product['card'].get('subj_root_name'),
-            checked_nms=[],
+            checked_nms={'checked_nms': []},
             vendor_code=the_product['card'].get('vendor_code'),
             min_price=min_price,
             the_product=the_product,

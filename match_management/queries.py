@@ -54,7 +54,6 @@ class MatchedProductQueries(BaseQueries):
         for saved_matched_product in saved_matched_products:
             if the_product.nm_id == saved_matched_product.nm_id:
                 saved_matched_product.min_price = the_product.min_price
-                # saved_matched_product.checked_nms = the_product.checked_nms
                 product = saved_matched_product
 
         if not product:
@@ -67,8 +66,8 @@ class MatchedProductQueries(BaseQueries):
         if the_product is None:
             return
 
-        saved_checked_nms = the_product.checked_nms
-        the_product.checked_nms = json.loads(saved_checked_nms) + json.loads(checked_nms)
+        saved_checked_nms = the_product.checked_nms.get('checked_nms')
+        the_product.checked_nms = dict(checked_nms=json.loads(saved_checked_nms) + json.loads(checked_nms))
         await self.save_in_db(instances=the_product)
 
 
