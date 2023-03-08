@@ -71,8 +71,10 @@ class FilterLevels:
         return matched, unmatched
 
     @staticmethod
-    def extra_filter(similar_products, matched):
-        pass
+    def extra_filter(the_product, matched):
+        return [
+            matched_product for matched_product in matched if matched_product.nm_id not in the_product.checked_nms
+        ]
 
 
 class MatchServices:
@@ -103,6 +105,8 @@ class MatchServices:
             matched_products = await self.match_utils.prepare_child_matched_products(
                 child_matched_products=matched, the_product=the_product)
 
+            # extra_filter
+            matched_products = self.filter_lvl.extra_filter(the_product=the_product, matched=matched_products)
             await self.child_matched_product_queries.get_or_create(child_matched_products=matched_products)
 
             await self.product_queries.delete_by_nms([
@@ -233,22 +237,34 @@ class MatchServices:
     async def remove_from_child_matched_products(self, df: pd.DataFrame):
         wb_standard_auth = self.pm_services.wb_api_utils.api_auth(token=settings.WB_STANDARD_API_TOKEN)
 
-        products_to_be_removed = []
-        nm_id = df['article wb'][0]
+        the_product = None
+        for index in df.index:
+            nm_id = df['article wb'][index]
+            child_matched_product = await self.child_matched_product_queries.get_child_by_nm_id(nm_id=nm_id)
+
+            if child_matched_product is not None:
+                the_product = await self.matched_product_queries.get_product_by_nm(
+                    nm=child_matched_product.parent_nm_id)
+                break
+
+        if the_product is None:
+            return
+
+        unmatched_products_to_be_saved = []
 
         for index in df.index:
             child_matched_product = await self.child_matched_product_queries.get_child_by_nm_id(
                 nm_id=df['article wb'][index])
             if child_matched_product:
-                products_to_be_removed.append(child_matched_product.product)
+                unmatched_products_to_be_saved.append(child_matched_product.product)
                 await self.child_matched_product_queries.delete_instance(instance=child_matched_product)
 
         prepared_for_saving_products = await self.match_utils.prepare_wb_products_for_saving(
-            products=products_to_be_removed)
+            products=unmatched_products_to_be_saved)
 
-        child_matched_product = await self.child_matched_product_queries.get_child_by_nm_id(nm_id=nm_id)
-        the_product = await self.matched_product_queries.get_product_by_nm(nm=child_matched_product.parent_nm_id)
+        checked_nms = [product.nm_id for product in prepared_for_saving_products]
 
         await self.pm_services.update_price(the_product=the_product, wb_standard_auth=wb_standard_auth)
         await self.product_queries.save_in_db(instances=prepared_for_saving_products, many=True)
+        await self.matched_product_queries.update_checked(nm_id=the_product.nm_id, checked_nms=checked_nms)
 

@@ -1,3 +1,5 @@
+import json
+
 from db.db import async_session
 from db.queries import BaseQueries
 from match_management.models import Product, MatchedProduct, ChildMatchedProduct, Brand
@@ -52,12 +54,22 @@ class MatchedProductQueries(BaseQueries):
         for saved_matched_product in saved_matched_products:
             if the_product.nm_id == saved_matched_product.nm_id:
                 saved_matched_product.min_price = the_product.min_price
+                # saved_matched_product.checked_nms = the_product.checked_nms
                 product = saved_matched_product
 
         if not product:
             product = the_product
         await self.save_in_db(instances=product)
         return product
+
+    async def update_checked(self, nm_id, checked_nms):
+        the_product = await self.get_product_by_nm(nm=nm_id)
+        if the_product is None:
+            return
+
+        saved_checked_nms = the_product.checked_nms
+        the_product.checked_nms = json.loads(saved_checked_nms) + checked_nms
+        await self.save_in_db(instances=the_product)
 
 
 class ChildMatchedProductQueries(BaseQueries):

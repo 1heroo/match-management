@@ -31,6 +31,7 @@ class MatchedProduct(Base):
     vendor_code = sa.Column(sa.String)
     min_price = sa.Column(sa.Integer)
     the_product = sa.Column(JSONB)
+    checked_nms = sa.Column(JSONB)
     matched_products = relationship('ChildMatchedProduct', back_populates='parent')
 
     def __repr__(self):
@@ -79,3 +80,4 @@ class Brand(Base):
 
     def __str__(self):
         return f'{self.title}'
+
