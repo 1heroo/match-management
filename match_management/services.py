@@ -73,7 +73,7 @@ class FilterLevels:
     @staticmethod
     def extra_filter(the_product, matched):
         return [
-            matched_product for matched_product in matched if matched_product.nm_id not in the_product.checked_nms
+            matched_product for matched_product in matched if matched_product.nm_id not in the_product.checked_nms.get('checked_nms')
         ]
 
 
