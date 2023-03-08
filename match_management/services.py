@@ -234,7 +234,7 @@ class MatchServices:
         wb_standard_auth = self.pm_services.wb_api_utils.api_auth(token=settings.WB_STANDARD_API_TOKEN)
 
         products_to_be_removed = []
-        nm_id = df['article wb'][-1]
+        nm_id = df['article wb'][0]
 
         for index in df.index:
             child_matched_product = await self.child_matched_product_queries.get_child_by_nm_id(
