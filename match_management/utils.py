@@ -128,12 +128,12 @@ class MatchUtils:
         for product in products:
             product = product.product
             obj = {
-                'vendorCode': product['card']['vendor_code'],
+                'vendorCode': product['card'].get('vendor_code'),
                 'name': product['card'].get('imt_name'),
-                'article wb': product['card']['nm_id'],
+                'article wb': product['card'].get('nm_id'),
                 'price': int(product['detail'].get('salePriceU')) // 100,
-                'vendor': product['seller']['supplierName'],
-                'link': f"https://www.wildberries.ru/catalog/{product['card']['nm_id']}/detail.aspx?targetUrl=GP",
+                'vendor': product['seller'].get('supplierName'),
+                'link': f"https://www.wildberries.ru/catalog/{product['card'].get('nm_id')}/detail.aspx?targetUrl=GP",
                 # 'by matching': by_matching
             }
 
@@ -145,7 +145,7 @@ class MatchUtils:
         output_data = []
         for product in products:
             output_data.append(Product(
-                nm_id=product['card']['nm_id'],
+                nm_id=product['card'].get('nm_id'),
                 product=product
             ))
         return output_data

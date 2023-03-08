@@ -5,12 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7aee828f-5334-4b95-ad74-873aa1cf42a4" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/41a9301c-1f87-4000-8631-036c6e9ef450.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/41a9301c-1f87-4000-8631-036c6e9ef450/storage_v2/_src_/database/match_db.OIWyEQ.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/41a9301c-1f87-4000-8631-036c6e9ef450/storage_v2/_src_/database/match_db.OIWyEQ/schema/information_schema.FNRwLQ.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/41a9301c-1f87-4000-8631-036c6e9ef450/storage_v2/_src_/database/match_db.OIWyEQ/schema/pg_catalog.0S1ZNQ.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/41a9301c-1f87-4000-8631-036c6e9ef450/storage_v2/_src_/database/match_db.OIWyEQ/schema/public.abK9xQ.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/c9e85c68-11d8-4e04-8dc4-58f99f73801a.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/c9e85c68-11d8-4e04-8dc4-58f99f73801a.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/match_management/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/match_management/utils.py" afterDir="false" />
     </list>
@@ -99,7 +93,7 @@
       <workItem from="1678186283735" duration="3413000" />
       <workItem from="1678194021982" duration="1103000" />
       <workItem from="1678271205250" duration="23251000" />
-      <workItem from="1678302849621" duration="229000" />
+      <workItem from="1678302849621" duration="700000" />
     </task>
     <servers />
   </component>
