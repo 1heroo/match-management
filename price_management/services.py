@@ -36,10 +36,15 @@ class PMServices:
 
             min_product_json = await self.pm_utils.get_min_product(matched_products=child_matched_products_json)
 
-            my_price = the_product_json['detail']['salePriceU'] / 100
-            min_price = min_product_json['detail']['salePriceU'] / 100
+            my_price = the_product_json['detail'].get('salePriceU') / 100
+            min_price = min_product_json['detail'].get('salePriceU') / 100
+
+            if not my_price and not min_price:
+                continue
+
             print('my price', my_price)
             print('min price', min_price)
+
             if my_price < min_price:
                 print('SKIDYYYSH', '\n\n\n')
                 continue
