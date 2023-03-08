@@ -5,8 +5,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7aee828f-5334-4b95-ad74-873aa1cf42a4" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/41a9301c-1f87-4000-8631-036c6e9ef450.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/41a9301c-1f87-4000-8631-036c6e9ef450.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/41a9301c-1f87-4000-8631-036c6e9ef450/storage_v2/_src_/database/match_db.OIWyEQ/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/41a9301c-1f87-4000-8631-036c6e9ef450/storage_v2/_src_/database/match_db.OIWyEQ/schema/public.abK9xQ.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/440d8ba9-0c7f-4fcc-b061-63abdde688cb.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/440d8ba9-0c7f-4fcc-b061-63abdde688cb/storage_v2/_src_/database/match_db.OIWyEQ.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/440d8ba9-0c7f-4fcc-b061-63abdde688cb/storage_v2/_src_/database/match_db.OIWyEQ/schema/information_schema.FNRwLQ.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/440d8ba9-0c7f-4fcc-b061-63abdde688cb/storage_v2/_src_/database/match_db.OIWyEQ/schema/pg_catalog.0S1ZNQ.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/440d8ba9-0c7f-4fcc-b061-63abdde688cb/storage_v2/_src_/database/match_db.OIWyEQ/schema/public.abK9xQ.meta" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/queries.py" beforeDir="false" afterPath="$PROJECT_DIR$/db/queries.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/match_management/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/match_management/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/match_management/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/match_management/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/match_management/queries.py" beforeDir="false" afterPath="$PROJECT_DIR$/match_management/queries.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/match_management/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/match_management/routes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/match_management/services.py" beforeDir="false" afterPath="$PROJECT_DIR$/match_management/services.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/match_management/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/match_management/utils.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,25 +43,25 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "D:/FASTAPI/price-management",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/FASTAPI/price-management&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "postgresql"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;postgresql&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\wb services\march\products-match" />
@@ -92,6 +105,7 @@
       <workItem from="1678186082673" duration="29000" />
       <workItem from="1678186283735" duration="3413000" />
       <workItem from="1678194021982" duration="1103000" />
+      <workItem from="1678271205250" duration="5921000" />
     </task>
     <servers />
   </component>

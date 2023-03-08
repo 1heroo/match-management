@@ -123,9 +123,10 @@ class MatchUtils:
         return await self.make_get_request(url=url, headers={})
 
     @staticmethod
-    async def prepare_output(products, by_matching=False):
+    async def prepare_output(products):
         output_data = []
         for product in products:
+            product = product.product
             obj = {
                 'vendorCode': product['card']['vendor_code'],
                 'name': product['card'].get('imt_name'),
@@ -155,6 +156,8 @@ class MatchUtils:
             nm_id=the_product['card'].get('nm_id'),
             title=the_product['card'].get('imt_name'),
             subj_name=the_product['card'].get('subj_name'),
+            brand=the_product['detail'].get('brand'),
+            brand_id=the_product['detail'].get('brandId'),
             subj_root_name=the_product['card'].get('subj_root_name'),
             vendor_code=the_product['card'].get('vendor_code'),
             min_price=min_price,
@@ -173,12 +176,32 @@ class MatchUtils:
                 vendor_name=matched_product['seller'].get('supplierName'),
                 price=int(matched_product['detail']['salePriceU'] / 100),
                 parent_nm_id=the_product.nm_id,
+                brand=matched_product['detail'].get('brand'),
+                brand_id=matched_product['detail'].get('brandId'),
                 vendor_code=matched_product['card'].get('vendor_code'),
                 product=matched_product,
                 is_correct=True,
                 parent_id=the_product.id,
             ))
         return to_be_saved
+
+    @staticmethod
+    async def check_stocks(the_product):
+        qty = 0
+
+        sizes = the_product['detail'].get('sizes')
+        if not sizes:
+            return False
+
+        for size in sizes:
+            stocks = size.get('stocks')
+            if not stocks:
+                return False
+
+            for stock in stocks:
+                qty += stock.get('qty')
+
+        return qty > 0
 
 
 def make_head(article: int):

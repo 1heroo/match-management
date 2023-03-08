@@ -85,6 +85,20 @@ class ChildMatchedProductQueries(BaseQueries):
             )
             return result.scalars().all()
 
+    async def get_children_by_parent_nm_id(self, parent_nm_id):
+        async with async_session() as session:
+            result = await session.execute(
+                sa.select(self.model).where(self.model.parent_nm_id == parent_nm_id)
+            )
+            return result.scalars().all()
+
+    async def get_child_by_nm_id(self, nm_id):
+        async with async_session() as session:
+            result = await session.execute(
+                sa.select(self.model).where(self.model.nm_id == nm_id)
+            )
+            return result.scalars().first()
+
 
 class BrandQueries(BaseQueries):
 

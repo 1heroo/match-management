@@ -1,5 +1,7 @@
 import asyncio
 
+import pandas as pd
+
 from match_management.queries import ProductQueries, MatchedProductQueries, ChildMatchedProductQueries
 from match_management.utils import MatchUtils
 from match_management.models import MatchedProduct
@@ -88,6 +90,10 @@ class MatchServices:
 
             the_product, matched = await self.match_management(article=article)
 
+            if not the_product:
+                print('the product is without stocks\n')
+                continue
+
             the_product = await self.match_utils.prepare_matched_product(the_product=the_product, min_price=min_price)
             the_product = await self.matched_product_queries.save_or_update(the_product=the_product)
 
@@ -101,6 +107,9 @@ class MatchServices:
 
     async def match_management(self, article):
         _, matched = await self.find_similar_to_article(article=article)
+
+        if not matched:
+            return None, None
         # prepared_matches = await self.match_utils.prepare_output(products=matched)
 
         the_product, matched_by_wb_recs = await self.check_by_identical_nms(matched=matched, main_article=article)
@@ -113,13 +122,19 @@ class MatchServices:
         # matched_by_search, _ = await self.check_by_search(main_article=article)
         # prepared_matches_by_search = await self.match_utils.prepare_output(products=matched_by_search)
 
-        # matched = prepared_matches + prepared_matches_by_wb_recs  # + prepared_matches_by_similar + prepared_matches_by_search
+        # matched = prepared_matches + prepared_matches_by_wb_recs  + prepared_matches_by_similar + prepared_matches_by_search
         # matched = await self.remove_duplicate_nms(products=matched)
         matched = await self.remove_duplicate_nms(products=matched + matched_by_wb_recs)
         return the_product, matched
 
     async def find_similar_to_article(self, article, products=None):
         the_product = await self.match_utils.get_product_data(article=article)
+
+        is_with_stocks = await self.match_utils.check_stocks(the_product=the_product)
+
+        if not is_with_stocks:
+            return None, None
+
         if not bool(products):
             # products = await self.match_utils.get_products()
             products = [product.product for product in await self.product_queries.get_all_unmatched_products()]
@@ -220,7 +235,6 @@ class MatchServices:
         checked = []
         for product in products:
             article = product['card']['nm_id']
-            # article = product['article wb']
 
             if article not in checked:
                 unique.append(product)
@@ -231,3 +245,19 @@ class MatchServices:
         products = await self.match_utils.get_products()
         prepared_for_saving_products = await self.match_utils.prepare_wb_products_for_saving(products=products)
         await self.product_queries.save_in_db(instances=prepared_for_saving_products, many=True)
+
+    async def remove_from_child_matched_products(self, df: pd.DataFrame):
+        products_to_be_removed = []
+
+        for index in df.index:
+            child_matched_product = await self.child_matched_product_queries.get_child_by_nm_id(
+                nm_id=df['article wb'][index])
+            if child_matched_product:
+                products_to_be_removed.append(child_matched_product.product)
+                await self.child_matched_product_queries.delete_instance(instance=child_matched_product)
+
+        prepared_for_saving_products = await self.match_utils.prepare_wb_products_for_saving(
+            products=products_to_be_removed)
+
+        await self.product_queries.save_in_db(instances=prepared_for_saving_products, many=True)
+

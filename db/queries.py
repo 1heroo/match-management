@@ -14,3 +14,8 @@ class BaseQueries:
                 session.add(instances)
             await session.commit()
 
+    @staticmethod
+    async def delete_instance(instance):
+        async with async_session() as session:
+            await session.delete(instance)
+            await session.commit()
