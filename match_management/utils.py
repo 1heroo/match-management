@@ -23,10 +23,11 @@ class MatchUtils:
             print(page, 'catalog page')
             page_url = url.format(page=page)
             data = await self.make_get_request(page_url, headers={})
-            data = data['data']['products']
-            products += data
-            if len(data) != 100:
-                break
+            if data:
+                data = data['data']['products']
+                products += data
+                if len(data) != 100:
+                    break
 
         return products
 
@@ -69,8 +70,8 @@ class MatchUtils:
 
     async def get_products(self):
         # products = await self.get_exact_category()136360
-        '136360, 15489, 15490, 15488234082'
-        products = await self.get_all_catalogs_from_brand(brand_ids=[15490, 15488, 15489, 35403])
+        '15490, 15488, 15489,  136360'
+        products = await self.get_all_catalogs_from_brand(brand_ids=[35403])
         output_data = []
 
         tasks = []
@@ -109,7 +110,6 @@ class MatchUtils:
         output_data = [item for item in output_data if not isinstance(item, Exception) and item]
         return output_data
 
-
     async def get_identical(self, article):
         url = f'https://identical-products.wildberries.ru/api/v1/identical?nmID={article}'
         return await self.make_get_request(url=url, headers={})
@@ -119,7 +119,7 @@ class MatchUtils:
         return await self.make_get_request(url=url, headers={})
 
     async def get_in_search(self, query):
-        url = 'https://search-goods.wildberries.ru/search?query={query}'
+        url = f'https://search-goods.wildberries.ru/search?query={query}'
         return await self.make_get_request(url=url, headers={})
 
     @staticmethod

@@ -6,32 +6,7 @@ from match_management.models import Product, MatchedProduct, ChildMatchedProduct
 import sqlalchemy as sa
 
 
-class ProductQueries(BaseQueries):
-
-    model = Product
-
-    async def get_all_unmatched_products(self):
-        async with async_session() as session:
-            result = await session.execute(
-                sa.select(self.model)
-            )
-            return result.scalars().all()
-
-    async def delete_by_nms(self, nms):
-
-        async with async_session() as session:
-            for nm in nms:
-                instance = await session.execute(
-                    sa.select(self.model).where(self.model.nm_id == int(nm))
-                )
-                instance = instance.scalars().first()
-                if instance:
-                    await session.delete(instance)
-                    await session.commit()
-
-
 class MatchedProductQueries(BaseQueries):
-
     model = MatchedProduct
 
     async def fetch_all(self):
@@ -72,7 +47,6 @@ class MatchedProductQueries(BaseQueries):
 
 
 class ChildMatchedProductQueries(BaseQueries):
-
     model = ChildMatchedProduct
 
     async def fetch_all(self):
@@ -111,8 +85,42 @@ class ChildMatchedProductQueries(BaseQueries):
             return result.scalars().first()
 
 
-class BrandQueries(BaseQueries):
+class ProductQueries(BaseQueries):
+    model = Product
+    child_matched_product_queries = ChildMatchedProductQueries()
 
+    async def fetch_all(self):
+        async with async_session() as session:
+            result = await session.execute(
+                sa.select(self.model)
+            )
+            return result.scalars().all()
+
+    async def delete_by_nms(self, nms):
+
+        async with async_session() as session:
+            for nm in nms:
+                instance = await session.execute(
+                    sa.select(self.model).where(self.model.nm_id == int(nm))
+                )
+                instance = instance.scalars().first()
+                if instance:
+                    await session.delete(instance)
+                    await session.commit()
+
+    async def get_or_create(self, products):
+        unmatched_products = await self.fetch_all()
+        child_matched_products = await self.child_matched_product_queries.fetch_all()
+        all_nms = [product.nm_id for product in unmatched_products] \
+                    + [matched_product.nm_id for matched_product in child_matched_products]
+
+        to_be_saved = [product for product in products
+                       if product.nm_id not in all_nms]
+
+        await self.save_in_db(instances=to_be_saved, many=True)
+
+
+class BrandQueries(BaseQueries):
     model = Brand
 
     async def fetch_all(self):

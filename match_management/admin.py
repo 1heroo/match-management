@@ -8,6 +8,7 @@ from match_management.models import Product, MatchedProduct, ChildMatchedProduct
 class ProductAdmin(ModelView, model=Product):
     page_size = 100
     column_list = ['nm_id', 'product']
+    column_searchable_list = ['nm_id']
 
 
 class MatchedProductAdmin(ModelView, model=MatchedProduct):

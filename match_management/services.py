@@ -89,7 +89,7 @@ class MatchServices:
 
     async def find_matches(self, df, article_column, min_price_column):
 
-        nms = [product.nm_id for product in await self.product_queries.get_all_unmatched_products()]
+        nms = [product.nm_id for product in await self.product_queries.fetch_all()]
         products = await self.match_utils.get_detail_by_nms(nms=nms)
 
         for index in df.index:
@@ -232,7 +232,8 @@ class MatchServices:
     async def aggregate_data_management(self):
         products = await self.match_utils.get_products()
         prepared_for_saving_products = await self.match_utils.prepare_wb_products_for_saving(products=products)
-        await self.product_queries.save_in_db(instances=prepared_for_saving_products, many=True)
+
+        await self.product_queries.get_or_create(products=prepared_for_saving_products)
 
     async def remove_from_child_matched_products(self, df: pd.DataFrame):
         wb_standard_auth = self.pm_services.wb_api_utils.api_auth(token=settings.WB_STANDARD_API_TOKEN)
