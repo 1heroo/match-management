@@ -123,14 +123,15 @@ class MatchUtils:
         return await self.make_get_request(url=url, headers={})
 
     @staticmethod
-    async def prepare_output(products):
+    async def prepare_output(products, the_product=False):
         output_data = []
         for product in products:
-            product = product.product
+            product = product.the_product if the_product else product.product
             obj = {
                 'vendorCode': product['card'].get('vendor_code'),
                 'name': product['card'].get('imt_name'),
                 'article wb': product['card'].get('nm_id'),
+                'brand': product['detail'].get('brand'),
                 'price': int(product['detail'].get('salePriceU')) // 100,
                 'vendor': product['seller'].get('supplierName'),
                 'link': f"https://www.wildberries.ru/catalog/{product['card'].get('nm_id')}/detail.aspx?targetUrl=GP",

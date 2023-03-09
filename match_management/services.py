@@ -269,3 +269,11 @@ class MatchServices:
         await self.product_queries.save_in_db(instances=prepared_for_saving_products, many=True)
         await self.matched_product_queries.update_checked(nm_id=the_product.nm_id, checked_nms=checked_nms)
 
+    async def get_products_with_no_children(self):
+        matched_products = await self.matched_product_queries.fetch_all()
+        matched_products_with_children = await self.matched_product_queries.get_matched_products_with_children()
+
+        matched_products = [product for product in matched_products if product.nm_id not in
+                            [matched_product_with_children.nm_id for matched_product_with_children in matched_products_with_children]]
+        products = await self.match_utils.prepare_output(products=matched_products, the_product=True)
+        return products

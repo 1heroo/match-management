@@ -45,6 +45,13 @@ class MatchedProductQueries(BaseQueries):
         the_product.checked_nms = {'checked_nms': saved_checked_nms + checked_nms}
         await self.save_in_db(instances=the_product)
 
+    async def get_matched_products_with_children(self):
+        async with async_session() as session:
+            result = await session.execute(
+                sa.select(self.model).where(self.model.matched_products)
+            )
+            return result.scalars().all()
+
 
 class ChildMatchedProductQueries(BaseQueries):
     model = ChildMatchedProduct

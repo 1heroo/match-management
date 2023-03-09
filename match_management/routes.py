@@ -59,3 +59,18 @@ async def remove_from_matched_products(file: bytes = File()):
     await matched_services.remove_from_child_matched_products(df=df)
 
     return Response(status_code=status.HTTP_200_OK)
+
+
+@router.get('/get-products-with-no-children/')
+async def get_products_with_no_children():
+    products = await matched_services.get_products_with_no_children()
+    df = pd.DataFrame(products)
+
+    output = io.BytesIO()
+    writer = pd.ExcelWriter(output, engine='xlsxwriter')
+    df.to_excel(writer, index=False)
+    writer.save()
+
+    return StreamingResponse(io.BytesIO(output.getvalue()),
+                             media_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                             headers={'Content-Disposition': f'attachment; filename="no_children_products.xlsx"'})
