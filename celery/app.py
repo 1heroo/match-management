@@ -3,12 +3,12 @@ from celery.schedules import crontab
 from core.settings import settings
 
 
-app = Celery('matching',
+celery = Celery('matching',
              broker=settings.RABBIT_BROKER_URL,
              include=['celery.tasks'])
 
 
-app.conf.beat_schedule = {
+celery.conf.beat_schedule = {
     # 'product aggregator': {
     #     'task': 'celery.tasks.product_aggregator',
     #     'schedule': crontab(minute=0, hour=10),
@@ -23,4 +23,4 @@ app.conf.beat_schedule = {
     }
 }
 
-app.conf.timezone = 'Europe/Moscow'
+celery.conf.timezone = 'Europe/Moscow'
