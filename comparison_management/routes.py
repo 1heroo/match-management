@@ -6,7 +6,7 @@ from starlette.responses import StreamingResponse
 
 from comparison_management.services import CMServices
 
-router = APIRouter(prefix='/compare-management', tags=['compare-management'])
+router = APIRouter(prefix='/compare-management', tags=['Compare management'])
 
 cm_services = CMServices()
 

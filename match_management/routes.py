@@ -9,7 +9,7 @@ from match_management.queries import ProductQueries, ChildMatchedProductQueries,
 from match_management.services import MatchServices
 from match_management.utils import MatchUtils
 
-router = APIRouter(prefix='/mm', tags=['match management'])
+router = APIRouter(prefix='/mm', tags=['Match management'])
 
 matched_services = MatchServices()
 matched_queries = MatchedProductQueries()

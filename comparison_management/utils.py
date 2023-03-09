@@ -115,8 +115,8 @@ class CMUtils:
 
             for option in options:
                 name = option['name']
-                if name in option_list:
-                    obj.update({name: option['value']})
+
+                obj.update({name: option['value']})
 
             sizes = product['detail'].get('sizes')
 

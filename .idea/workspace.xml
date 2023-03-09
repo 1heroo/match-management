@@ -7,8 +7,8 @@
     <list default="true" id="7aee828f-5334-4b95-ad74-873aa1cf42a4" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/comparison_management/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/comparison_management/routes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/comparison_management/services.py" beforeDir="false" afterPath="$PROJECT_DIR$/comparison_management/services.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/comparison_management/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/comparison_management/utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/match_management/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/match_management/routes.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -98,7 +98,7 @@
       <workItem from="1678302849621" duration="700000" />
       <workItem from="1678342078970" duration="33000" />
       <workItem from="1678348833813" duration="2917000" />
-      <workItem from="1678357021151" duration="13467000" />
+      <workItem from="1678357021151" duration="14426000" />
     </task>
     <servers />
   </component>
