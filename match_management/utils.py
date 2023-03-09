@@ -23,12 +23,12 @@ class MatchUtils:
             print(page, 'catalog page')
             page_url = url.format(page=page)
             data = await self.make_get_request(page_url, headers={})
+
             if data:
                 data = data['data']['products']
                 products += data
                 if len(data) != 100:
                     break
-
         return products
 
     async def get_exact_category(self):
@@ -70,8 +70,8 @@ class MatchUtils:
 
     async def get_products(self):
         # products = await self.get_exact_category()136360
-        '15490, 15488, 15489,  136360'
-        products = await self.get_all_catalogs_from_brand(brand_ids=[35403])
+        '15490, 15488, 15489,  136360, 35403'
+        products = await self.get_all_catalogs_from_brand(brand_ids=[234082])
         output_data = []
 
         tasks = []
