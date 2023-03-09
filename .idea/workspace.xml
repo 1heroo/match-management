@@ -5,12 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7aee828f-5334-4b95-ad74-873aa1cf42a4" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/c9e85c68-11d8-4e04-8dc4-58f99f73801a.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/c9e85c68-11d8-4e04-8dc4-58f99f73801a.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/c9e85c68-11d8-4e04-8dc4-58f99f73801a/storage_v2/_src_/database/match_db.OIWyEQ/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/c9e85c68-11d8-4e04-8dc4-58f99f73801a/storage_v2/_src_/database/match_db.OIWyEQ/schema/public.abK9xQ.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/match_management/queries.py" beforeDir="false" afterPath="$PROJECT_DIR$/match_management/queries.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/match_management/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/match_management/routes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/match_management/services.py" beforeDir="false" afterPath="$PROJECT_DIR$/match_management/services.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/match_management/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/match_management/utils.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -101,7 +97,7 @@
       <workItem from="1678302849621" duration="700000" />
       <workItem from="1678342078970" duration="33000" />
       <workItem from="1678348833813" duration="2917000" />
-      <workItem from="1678357021151" duration="2664000" />
+      <workItem from="1678357021151" duration="2861000" />
     </task>
     <servers />
   </component>

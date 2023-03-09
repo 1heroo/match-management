@@ -127,12 +127,17 @@ class MatchUtils:
         output_data = []
         for product in products:
             product = product.the_product if the_product else product.product
+
+            price = product['detail'].get('salePriceU')
+            if price:
+                price = int(price) // 100
+
             obj = {
                 'vendorCode': product['card'].get('vendor_code'),
                 'name': product['card'].get('imt_name'),
                 'article wb': product['card'].get('nm_id'),
                 'brand': product['detail'].get('brand'),
-                'price': int(product['detail'].get('salePriceU')) // 100,
+                'price': price,
                 'vendor': product['seller'].get('supplierName'),
                 'link': f"https://www.wildberries.ru/catalog/{product['card'].get('nm_id')}/detail.aspx?targetUrl=GP",
                 # 'by matching': by_matching
