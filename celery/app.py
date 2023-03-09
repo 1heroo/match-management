@@ -3,7 +3,7 @@ from celery.schedules import crontab
 from core.settings import settings
 
 
-app = Celery('matching',
+app = Celery('celery',
              broker=settings.RABBIT_BROKER_URL,
              include=['celery.tasks'])
 
