@@ -19,7 +19,7 @@ child_matched_queries = ChildMatchedProductQueries()
 product_queries = ProductQueries()
 
 
-@router.post('/launch-matching')
+@router.post('/launch-matching/')
 async def main(file: bytes = File()):
     df = pd.read_excel(file)
     article_column = df['Артикул WB'].name
@@ -34,7 +34,7 @@ async def aggregate_products():
     return Response(status_code=status.HTTP_200_OK)
 
 
-@router.get('/get-child-matched-products/{article_wb}')
+@router.get('/get-child-matched-products/{article_wb}/')
 async def get_child_matched_products(article_wb: int):
     child_matched_products = await child_matched_queries.get_children_by_parent_nm_id(parent_nm_id=article_wb)
 
@@ -76,7 +76,7 @@ async def get_products_with_no_children():
                              headers={'Content-Disposition': f'attachment; filename="no_children_products.xlsx"'})
 
 
-@router.post('/import-manually-matched-products')
+@router.post('/import-manually-matched-products/')
 async def import_matched_products(file: bytes = File()):
     df = pd.read_excel(file)
 

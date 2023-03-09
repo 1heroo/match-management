@@ -11,7 +11,7 @@ router = APIRouter(prefix='/price', tags=['Price Management'])
 pm_services = PMServices()
 
 
-@router.get('/price-monitoring')
+@router.get('/price-monitoring/')
 async def price_management():
     item = await pm_services.price_management()
     return True

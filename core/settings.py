@@ -11,6 +11,7 @@ class Settings:
     DATABASE_URL = \
         f'postgresql+asyncpg://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_HOST}:{POSTGRES_PORT}/{POSTGRES_DB_NAME}'
 
+    HOST = config('HOST')
     WB_STANDARD_API_TOKEN = config('WB_STANDARD_API_TOKEN')
 
 
