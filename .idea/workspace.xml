@@ -5,15 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7aee828f-5334-4b95-ad74-873aa1cf42a4" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/celery/tasks.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/settings.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/local.yml" beforeDir="false" afterPath="$PROJECT_DIR$/local.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/match_management/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/match_management/routes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/price_management/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/price_management/routes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -104,7 +97,7 @@
       <workItem from="1678342078970" duration="33000" />
       <workItem from="1678348833813" duration="2917000" />
       <workItem from="1678357021151" duration="15034000" />
-      <workItem from="1678383208531" duration="1309000" />
+      <workItem from="1678383208531" duration="1728000" />
     </task>
     <servers />
   </component>

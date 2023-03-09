@@ -41,7 +41,7 @@ services:
     volumes:
       - .:/code
     command: >
-      sh -c "celery -A celery.app.app worker -B -E --loglevel=info"
+      sh -c "celery -A celery.app worker -B -E --loglevel=info"
     env_file:
       - ./.env
     depends_on:
