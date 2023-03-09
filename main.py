@@ -10,6 +10,7 @@ from sqladmin import Admin
 from match_management.admin import ProductAdmin, MatchedProductAdmin, ChildMatchedProductAdmin, BrandAdmin
 from match_management.routes import router as mm_router
 from price_management.routes import router as pm_router
+from comparison_management.routes import router as cm_router
 
 
 app = FastAPI(title='Сопоставление товаров и динамическое управление ценой')
@@ -18,7 +19,7 @@ app = FastAPI(title='Сопоставление товаров и динамич
 # routes staff
 app.include_router(mm_router)
 app.include_router(pm_router)
-
+app.include_router(cm_router)
 # admin staff
 admin = Admin(app, async_engine)
 

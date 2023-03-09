@@ -74,3 +74,15 @@ async def get_products_with_no_children():
     return StreamingResponse(io.BytesIO(output.getvalue()),
                              media_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
                              headers={'Content-Disposition': f'attachment; filename="no_children_products.xlsx"'})
+
+
+@router.post('/import-manually-matched-products')
+async def import_matched_products(file: bytes = File()):
+    df = pd.read_excel(file)
+
+    the_product_column = df['Наш Артикул WB'].name
+    child_product_column = df['Сопоставленный Артикул WB'].name
+    await matched_services.manually_add_child_matches(
+        df=df, the_product_column=the_product_column, child_product_column=child_product_column)
+
+    return Response(status_code=status.HTTP_200_OK)
