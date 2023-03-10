@@ -46,7 +46,7 @@ class PMServices:
         my_price = the_product_json['detail'].get('salePriceU')
         min_price = min_product_json['detail'].get('salePriceU')
 
-        if not my_price and not min_price:
+        if not my_price or not min_price:
             return
         else:
             my_price /= 100
