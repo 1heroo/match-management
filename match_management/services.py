@@ -87,10 +87,7 @@ class MatchServices:
         self.child_matched_product_queries = ChildMatchedProductQueries()
         self.pm_services = PMServices()
 
-    async def find_matches(self, df, article_column, min_price_column):
-
-        nms = [product.nm_id for product in await self.product_queries.fetch_all()]
-        products = await self.match_utils.get_detail_by_nms(nms=nms)
+    async def find_matches(self, df, article_column, min_price_column, products):
 
         df[min_price_column] = df[min_price_column].notnull()
 
@@ -310,6 +307,9 @@ class MatchServices:
                 continue
             children_to_be_saved += await self.match_utils.prepare_child_matched_products(
                 the_product=the_product, child_matched_products=[df['product'][index]])
+
+            await self.child_matched_product_queries.resave_matched_product(
+                the_product=the_product, matched_products=children_to_be_saved)
 
             nms_to_be_removed_from_unmatched_products.append(int(df[child_product_column][index]))
 

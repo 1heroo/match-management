@@ -24,21 +24,29 @@ brand_queries = BrandQueries()
 
 @router.get('/lunch-matching-with_local_file/')
 async def launch_matching_with_files():
+    nms = [product.nm_id for product in await product_queries.fetch_all()]
+    products = await match_utils.get_detail_by_nms(nms=nms)
+
     for product_file in glob.glob('file_db/*.xlsx'):
         df = pd.read_excel(product_file)
         article_column = df['Артикул WB'].name
         min_price_column = df['Минимальная цена'].name
-        await matched_services.find_matches(df=df, article_column=article_column, min_price_column=min_price_column)
+        await matched_services.find_matches(
+            df=df, article_column=article_column, min_price_column=min_price_column, products=products)
 
     return Response(status_code=status.HTTP_200_OK)
 
 
 @router.post('/launch-matching/')
 async def main(file: bytes = File()):
+    nms = [product.nm_id for product in await product_queries.fetch_all()]
+    products = await match_utils.get_detail_by_nms(nms=nms)
+
     df = pd.read_excel(file)
     article_column = df['Артикул WB'].name
     min_price_column = df['Минимальная цена'].name
-    await matched_services.find_matches(df=df, article_column=article_column, min_price_column=min_price_column)
+    await matched_services.find_matches(
+        df=df, article_column=article_column, min_price_column=min_price_column, products=products)
     return Response(status_code=status.HTTP_200_OK)
 
 
