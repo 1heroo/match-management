@@ -92,9 +92,17 @@ class MatchServices:
         nms = [product.nm_id for product in await self.product_queries.fetch_all()]
         products = await self.match_utils.get_detail_by_nms(nms=nms)
 
+        df[min_price_column] = df[min_price_column].notnull()
+
         for index in df.index:
             article = int(df[article_column][index])
-            min_price = int(df[min_price_column][index])
+            min_price = df[min_price_column][index]
+
+            if bool(min_price):
+                min_price = int(min_price_column)
+            else:
+                continue
+
             print(article)
 
             the_product, matched = await self.match_management(article=article, products=products)
