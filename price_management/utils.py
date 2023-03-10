@@ -16,7 +16,7 @@ class PMUtils:
         percentage = min_price * percentage / 100
         percentage = min_step if percentage > min_step else percentage
 
-        my_price -= percentage
+        my_price = min_price - percentage
 
         final_price = the_product_min_price if the_product_min_price >= my_price else my_price
         return int(final_price)
