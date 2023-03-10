@@ -29,6 +29,7 @@ admin.add_view(ChildMatchedProductAdmin)
 admin.add_view(BrandAdmin)
 
 
+
 if __name__ == '__main__':
     uvicorn.run(
         app='main:app',
