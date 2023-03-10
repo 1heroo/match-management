@@ -93,7 +93,6 @@ class ChildMatchedProductQueries(BaseQueries):
 
     async def resave_matched_product(self, the_product, matched_products):
         saved_child_matched_products = await self.fetch_all()
-
         instances_to_be_resaved = []
 
         for saved_child in saved_child_matched_products:
@@ -102,6 +101,7 @@ class ChildMatchedProductQueries(BaseQueries):
                     saved_child.parent_nm_id = the_product.nm_id
                     saved_child.parent_id = the_product.id
                     instances_to_be_resaved.append(saved_child)
+
         await self.save_in_db(instances=instances_to_be_resaved, many=True)
 
 

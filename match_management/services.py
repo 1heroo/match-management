@@ -307,11 +307,12 @@ class MatchServices:
             if the_product is None:
                 print('the product not found')
                 continue
-            children_to_be_saved += await self.match_utils.prepare_child_matched_products(
+            child = await self.match_utils.prepare_child_matched_products(
                 the_product=the_product, child_matched_products=[df['product'][index]])
 
+            children_to_be_saved += child
             await self.child_matched_product_queries.resave_matched_product(
-                the_product=the_product, matched_products=children_to_be_saved)
+                the_product=the_product, matched_products=child)
 
             nms_to_be_removed_from_unmatched_products.append(int(df[child_product_column][index]))
             await self.pm_services.update_price(the_product=the_product, wb_standard_auth=wb_standard_auth)
