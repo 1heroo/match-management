@@ -89,13 +89,13 @@ class MatchServices:
 
     async def find_matches(self, df, article_column, min_price_column, products):
 
-        df[min_price_column] = df[min_price_column].notnull()
+        df[min_price_column] = df[min_price_column].isnull()
 
         for index in df.index:
             article = int(df[article_column][index])
             min_price = df[min_price_column][index]
 
-            if bool(min_price):
+            if not bool(min_price):
                 min_price = int(min_price)
             else:
                 continue
