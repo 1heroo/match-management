@@ -13,6 +13,7 @@ class Settings:
 
     HOST = config('HOST')
     WB_STANDARD_API_TOKEN = config('WB_STANDARD_API_TOKEN')
+    RABBIT_BROKER_URL = config('RABBIT_BROKER_URL')
 
 
 settings = Settings()
