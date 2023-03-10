@@ -11,18 +11,18 @@ app = Celery('tasks',
 app.conf.beat_schedule = {
     'product aggregator': {
         'task': 'tasks.tasks.product_aggregator',
-        'schedule': 5
+        'schedule': 60 * 60 * 2
         # 'schedule': crontab(minute=0, hour=10),
     },
     'launch_matching': {
         'task': 'tasks.tasks.launch_matching',
-        'schedule': 5
-        # 'schedule': crontab(minute=0, hour=11)
+        'schedule': 60 * 60 * 2
+        # 'schedule': crontab(minute=0, hour=11),
     },
     'price_management': {
         'task': 'tasks.tasks.price_management',
-        'schedule': 5
-        # 'schedule': crontab(minute=0, hour=12)
+        'schedule': 60 * 60 * 2
+        # 'schedule': crontab(minute=0, hour=12),
     }
 }
 
