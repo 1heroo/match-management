@@ -285,6 +285,8 @@ class MatchServices:
 
     async def manually_add_child_matches(self, df, the_product_column, child_product_column):
 
+        wb_standard_auth = self.pm_services.wb_api_utils.api_auth(settings.WB_STANDARD_API_TOKEN)
+
         products_to_be_imported = await self.match_utils.get_detail_by_nms(
             nms=[int(df[child_product_column][index]) for index in df.index])
 
@@ -312,6 +314,7 @@ class MatchServices:
                 the_product=the_product, matched_products=children_to_be_saved)
 
             nms_to_be_removed_from_unmatched_products.append(int(df[child_product_column][index]))
+            await self.pm_services.update_price(the_product=the_product, wb_standard_auth=wb_standard_auth)
 
         await self.child_matched_product_queries.get_or_create(child_matched_products=children_to_be_saved)
         await self.product_queries.delete_by_nms(nms=nms_to_be_removed_from_unmatched_products)

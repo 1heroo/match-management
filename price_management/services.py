@@ -19,7 +19,6 @@ class PMServices:
         wb_standard_auth = self.wb_api_utils.api_auth(token=settings.WB_STANDARD_API_TOKEN)
 
         matched_products = await self.matched_product_queries.fetch_all()
-        # matched_products = matched_products[:1]
         print(matched_products)
         for the_product in matched_products:
             await self.update_price(the_product=the_product, wb_standard_auth=wb_standard_auth)
