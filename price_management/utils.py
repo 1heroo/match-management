@@ -8,7 +8,7 @@ class PMUtils:
     @staticmethod
     async def get_min_product(matched_products):
 
-        min_product = min(matched_products, key=lambda item: item['detail']['salePriceU'])
+        min_product = min(matched_products, key=lambda item: item['detail'].get('salePriceU'))
         return min_product
 
     @staticmethod
