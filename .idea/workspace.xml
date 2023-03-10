@@ -5,7 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7aee828f-5334-4b95-ad74-873aa1cf42a4" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/file_db/PIT загрузка товаров.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/c9e85c68-11d8-4e04-8dc4-58f99f73801a.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/c9e85c68-11d8-4e04-8dc4-58f99f73801a.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/c9e85c68-11d8-4e04-8dc4-58f99f73801a/storage_v2/_src_/database/match_db.OIWyEQ/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/c9e85c68-11d8-4e04-8dc4-58f99f73801a/storage_v2/_src_/database/match_db.OIWyEQ/schema/public.abK9xQ.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/celery/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/tasks/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/celery/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/tasks/app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/celery/tasks.py" beforeDir="false" afterPath="$PROJECT_DIR$/tasks/tasks.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/local.yml" beforeDir="false" afterPath="$PROJECT_DIR$/local.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/match_management/queries.py" beforeDir="false" afterPath="$PROJECT_DIR$/match_management/queries.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/match_management/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/match_management/routes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/match_management/services.py" beforeDir="false" afterPath="$PROJECT_DIR$/match_management/services.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/match_management/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/match_management/utils.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,27 +40,28 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "D:/FASTAPI/advertizment-wb",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/FASTAPI/advertizment-wb&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "postgresql"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;postgresql&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\wb services\march\products-match\file_db" />
       <recent name="D:\wb services\march\products-match" />
     </key>
   </component>
@@ -96,7 +108,8 @@
       <workItem from="1678342078970" duration="33000" />
       <workItem from="1678348833813" duration="2917000" />
       <workItem from="1678357021151" duration="15034000" />
-      <workItem from="1678383208531" duration="2561000" />
+      <workItem from="1678383208531" duration="3498000" />
+      <workItem from="1678423460061" duration="2392000" />
     </task>
     <servers />
   </component>

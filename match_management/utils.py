@@ -68,10 +68,8 @@ class MatchUtils:
 
         return obj
 
-    async def get_products(self):
-        # products = await self.get_exact_category()136360
-        '15490, 15488, 15489,  136360, 35403'
-        products = await self.get_all_catalogs_from_brand(brand_ids=[234082])
+    async def get_products(self, brand_ids):
+        products = await self.get_all_catalogs_from_brand(brand_ids=brand_ids)
         output_data = []
 
         tasks = []

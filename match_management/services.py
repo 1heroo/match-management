@@ -229,8 +229,8 @@ class MatchServices:
                 checked.append(article)
         return unique
 
-    async def aggregate_data_management(self):
-        products = await self.match_utils.get_products()
+    async def aggregate_data_management(self, brand_ids):
+        products = await self.match_utils.get_products(brand_ids)
         prepared_for_saving_products = await self.match_utils.prepare_wb_products_for_saving(products=products)
 
         await self.product_queries.get_or_create(products=prepared_for_saving_products)

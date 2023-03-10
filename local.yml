@@ -24,40 +24,40 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_DB=match_db
 
-#  rabbitmq:
-#    image: rabbitmq:3.8-management-alpine
-#    ports:
-#      - 15673:15672
-#    environment:
-#      RABBITMQ_DEFAULT_VHOST: vhost
-#      RABBITMQ_DEFAULT_USER: user
-#      RABBITMQ_DEFAULT_PASS: pass
-#
-#  celery_worker:
-#    build:
-#      context: .
-#      dockerfile: Dockerfile
-#
-#    volumes:
-#      - .:/code
-#    command: >
-#      sh -c "celery -A celery.app worker -B -E --loglevel=info"
-#    env_file:
-#      - ./.env
-#    depends_on:
-#      - rabbitmq
-#      - web
-#      - db
-#
-#    stdin_open: true
-#
-#  flower:
-#    image: mher/flower:0.9.7
-#    command: [ 'flower', 'amqp://user:pass@rabbitmq:5672/vhost', '--port=5555' ]
-#    ports:
-#      - 5555:5555
-#    depends_on:
-#      - rabbitmq
+  rabbitmq:
+    image: rabbitmq:3.8-management-alpine
+    ports:
+      - 15673:15672
+    environment:
+      RABBITMQ_DEFAULT_VHOST: vhost
+      RABBITMQ_DEFAULT_USER: user
+      RABBITMQ_DEFAULT_PASS: pass
+
+  celery_worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    volumes:
+      - .:/code
+    command: >
+      sh -c "celery -A tasks.app worker -B -E --loglevel=info"
+    env_file:
+      - ./.env
+    depends_on:
+      - rabbitmq
+      - web
+      - db
+
+    stdin_open: true
+
+  flower:
+    image: mher/flower:0.9.7
+    command: [ 'flower', 'amqp://user:pass@rabbitmq:5672/vhost', '--port=5555' ]
+    ports:
+      - 5555:5555
+    depends_on:
+      - rabbitmq
 
 volumes:
   postgres_data:

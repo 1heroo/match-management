@@ -130,11 +130,16 @@ class ProductQueries(BaseQueries):
 class BrandQueries(BaseQueries):
     model = Brand
 
-    async def fetch_all(self):
+    async def fetch_all(self, included_to_pm=False):
         async with async_session() as session:
-            result = await session.execute(
-                sa.select(self.model)
-            )
+            if included_to_pm:
+                result = await session.execute(
+                    sa.select(self.model).where(self.model.is_included_to_pm)
+                )
+            else:
+                result = await session.execute(
+                    sa.select(self.model)
+                )
             return result.scalars().all()
 
     async def get_brand_by_brand_id(self, brand_id, included_to_pm=False):

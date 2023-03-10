@@ -5,9 +5,11 @@ import pandas as pd
 from starlette import status
 from starlette.responses import StreamingResponse, Response
 
-from match_management.queries import ProductQueries, ChildMatchedProductQueries, MatchedProductQueries
+from match_management.queries import ProductQueries, ChildMatchedProductQueries, MatchedProductQueries, BrandQueries
 from match_management.services import MatchServices
 from match_management.utils import MatchUtils
+import glob
+
 
 router = APIRouter(prefix='/mm', tags=['Match management'])
 
@@ -17,6 +19,18 @@ match_utils = MatchUtils()
 
 child_matched_queries = ChildMatchedProductQueries()
 product_queries = ProductQueries()
+brand_queries = BrandQueries()
+
+
+@router.get('/lunch-matching-with_local_file/')
+async def launch_matching_with_files():
+    for product_file in glob.glob('file_db/*.xlsx'):
+        df = pd.read_excel(product_file)
+        article_column = df['Артикул WB'].name
+        min_price_column = df['Минимальная цена'].name
+        await matched_services.find_matches(df=df, article_column=article_column, min_price_column=min_price_column)
+
+    return Response(status_code=status.HTTP_200_OK)
 
 
 @router.post('/launch-matching/')
@@ -30,7 +44,9 @@ async def main(file: bytes = File()):
 
 @router.get('/aggregate-products/')
 async def aggregate_products():
-    await matched_services.aggregate_data_management()
+    brands = await brand_queries.fetch_all(included_to_pm=True)
+    brand_ids = [brand.brand_id for brand in brands]
+    await matched_services.aggregate_data_management(brand_ids=brand_ids)
     return Response(status_code=status.HTTP_200_OK)
 
 
