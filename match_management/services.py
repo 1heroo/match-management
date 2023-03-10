@@ -99,7 +99,7 @@ class MatchServices:
             min_price = df[min_price_column][index]
 
             if bool(min_price):
-                min_price = int(min_price_column)
+                min_price = int(min_price)
             else:
                 continue
 
