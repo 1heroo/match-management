@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from fastapi.openapi.models import Response
+from starlette.responses import Response
 from starlette import status
 
 from price_management.services import PMServices

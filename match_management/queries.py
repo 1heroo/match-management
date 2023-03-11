@@ -1,5 +1,7 @@
 import json
 
+import pandas as pd
+
 from db.db import async_session
 from db.queries import BaseQueries
 from match_management.models import Product, MatchedProduct, ChildMatchedProduct, Brand
@@ -133,7 +135,7 @@ class ProductQueries(BaseQueries):
         unmatched_products = await self.fetch_all()
         child_matched_products = await self.child_matched_product_queries.fetch_all()
         all_nms = [product.nm_id for product in unmatched_products] \
-                    + [matched_product.nm_id for matched_product in child_matched_products]
+                  + [matched_product.nm_id for matched_product in child_matched_products]
 
         to_be_saved = [product for product in products
                        if product.nm_id not in all_nms]
@@ -142,30 +144,38 @@ class ProductQueries(BaseQueries):
 
     async def save_or_update(self, products):
         db_instances = []
-        unmatched_products = await self.fetch_all()
-        matched_products = await self.matched_product_queries.fetch_all()
-        child_matched_products = await self.child_matched_product_queries.fetch_all()
-        saved_products = unmatched_products + matched_products + child_matched_products
-        all_nms = [product.nm_id for product in saved_products]
+        all_saved_products = await self.fetch_all() \
+                             + await self.matched_product_queries.fetch_all() \
+                             + await self.child_matched_product_queries.fetch_all()
+
+        all_nms = [product.nm_id for product in all_saved_products]
         new_instances = [product for product in products if product.nm_id not in all_nms]
 
-        for saved_product in saved_products:
-            for new_product in products:
+        products = [{'nm_id': product.nm_id, 'new_product': product} for product in products]
+        saved_products = [{'nm_id': product.nm_id, 'saved_product': product} for product in all_saved_products]
 
-                if saved_product.nm_id == new_product.nm_id:
-                    price = new_product.product['detail'].get('salePriceU')
-                    if price:
-                        price //= 100
+        products_df = pd.DataFrame(products)
+        saved_products_df = pd.DataFrame(saved_products)
+        df = pd.merge(
+            saved_products_df, products_df, how='inner', left_on='nm_id', right_on='nm_id')
 
-                    if isinstance(saved_product, Product):
-                        saved_product.product = new_product.product
-                    elif isinstance(saved_product, MatchedProduct):
-                        saved_product.price = price
-                        saved_product.the_product = new_product.product
-                    elif isinstance(saved_product, ChildMatchedProduct):
-                        saved_product.price = price
-                        saved_product.product = new_product.product
-                    db_instances.append(saved_product)
+        for index in df.index:
+            saved_product = df['saved_product'][index]
+            new_product = df['new_product'][index]
+
+            price = new_product.product['detail'].get('salePriceU')
+            if price:
+                price //= 100
+
+            if isinstance(saved_product, Product):
+                saved_product.product = new_product.product
+            elif isinstance(saved_product, MatchedProduct):
+                saved_product.price = price
+                saved_product.the_product = new_product.product
+            elif isinstance(saved_product, ChildMatchedProduct):
+                saved_product.price = price
+                saved_product.product = new_product.product
+            db_instances.append(saved_product)
 
         await self.save_in_db(instances=new_instances + db_instances, many=True)
 
