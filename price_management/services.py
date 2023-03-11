@@ -44,6 +44,9 @@ class PMServices:
 
         child_matched_products_json = await self.match_utils.check_stocks(products=child_matched_products_json)
 
+        if not child_matched_products_json:
+            return
+
         min_product_json = await self.pm_utils.get_min_product(matched_products=child_matched_products_json)
 
         my_price = the_product_json['detail'].get('salePriceU')
