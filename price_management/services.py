@@ -34,6 +34,7 @@ class PMServices:
         child_matched_products = await self.child_matched_products_queries.get_children_by_parent_id(
             parent_id=the_product.id)
 
+        child_matched_products = [product for product in child_matched_products if the_product.nm_id != product.nm_id]
         if not child_matched_products:
             return
 
@@ -54,9 +55,9 @@ class PMServices:
         print('my price', my_price)
         print('min price', min_price)
 
-        if my_price < min_price:
-            print('SKIDYYYSH', '\n\n\n')
-            return
+        # if my_price < min_price:
+        #     print('SKIDYYYSH', '\n\n\n')
+        #     return
 
         if the_product.min_price < min_price:
             calculated_price = await self.pm_utils.calculate_price(
