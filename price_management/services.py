@@ -19,7 +19,7 @@ class PMServices:
         wb_standard_auth = self.wb_api_utils.api_auth(token=settings.WB_STANDARD_API_TOKEN)
 
         matched_products = await self.matched_product_queries.fetch_all()
-        print(matched_products)
+
         for the_product in matched_products:
             await self.update_price(the_product=the_product, wb_standard_auth=wb_standard_auth)
 
@@ -35,11 +35,14 @@ class PMServices:
             parent_id=the_product.id)
 
         child_matched_products = [product for product in child_matched_products if the_product.nm_id != product.nm_id]
+
         if not child_matched_products:
             return
 
         child_matched_products_json = await self.match_utils.get_detail_by_nms(
             nms=[product.nm_id for product in child_matched_products])
+
+        child_matched_products_json = await self.match_utils.check_stocks(products=child_matched_products_json)
 
         min_product_json = await self.pm_utils.get_min_product(matched_products=child_matched_products_json)
 
