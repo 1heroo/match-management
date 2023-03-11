@@ -156,12 +156,17 @@ class MatchUtils:
 
     @staticmethod
     async def prepare_matched_product(the_product, min_price):
+        price = the_product['detail'].get('salePriceU')
+        if price:
+            price //= 100
+
         the_product_to_be_saved = MatchedProduct(
             nm_id=the_product['card'].get('nm_id'),
             title=the_product['card'].get('imt_name'),
             subj_name=the_product['card'].get('subj_name'),
             brand=the_product['detail'].get('brand'),
             brand_id=the_product['detail'].get('brandId'),
+            price=price,
             subj_root_name=the_product['card'].get('subj_root_name'),
             checked_nms={'checked_nms': []},
             vendor_code=the_product['card'].get('vendor_code'),
@@ -175,17 +180,20 @@ class MatchUtils:
         to_be_saved = []
 
         for matched_product in child_matched_products:
+            price = matched_product['detail'].get('salePriceU')
+            if price:
+                price //= 100
+
             to_be_saved.append(ChildMatchedProduct(
                 nm_id=matched_product['card'].get('nm_id'),
                 title=matched_product['card'].get('imt_name'),
                 vendor_name=matched_product['seller'].get('supplierName'),
-                price=int(matched_product['detail']['salePriceU'] / 100),
+                price=price,
                 parent_nm_id=the_product.nm_id,
                 brand=matched_product['detail'].get('brand'),
                 brand_id=matched_product['detail'].get('brandId'),
                 vendor_code=matched_product['card'].get('vendor_code'),
                 product=matched_product,
-                is_correct=True,
                 parent_id=the_product.id,
             ))
         return to_be_saved

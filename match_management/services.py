@@ -237,8 +237,7 @@ class MatchServices:
     async def aggregate_data_management(self, brand_ids):
         products = await self.match_utils.get_products(brand_ids)
         prepared_for_saving_products = await self.match_utils.prepare_wb_products_for_saving(products=products)
-
-        await self.product_queries.get_or_create(products=prepared_for_saving_products)
+        await self.product_queries.save_or_update(products=prepared_for_saving_products)
 
     async def remove_from_child_matched_products(self, df: pd.DataFrame):
         wb_standard_auth = self.pm_services.wb_api_utils.api_auth(token=settings.WB_STANDARD_API_TOKEN)

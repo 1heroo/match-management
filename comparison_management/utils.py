@@ -110,7 +110,6 @@ class CMUtils:
                 'Ссылка': f'https://www.wildberries.ru/catalog/{article}/detail.aspx?targetUrl=BP'
             }
 
-            option_list = ['Ширина упаковки', 'Высота упаковки', 'Длина упаковки', 'Страна производства', 'ТНВЭД']
             options = product['card'].get('options', [])
 
             for option in options:

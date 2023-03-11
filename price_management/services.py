@@ -19,6 +19,7 @@ class PMServices:
         wb_standard_auth = self.wb_api_utils.api_auth(token=settings.WB_STANDARD_API_TOKEN)
 
         matched_products = await self.matched_product_queries.fetch_all()
+        matched_products = matched_products[:1]
 
         for the_product in matched_products:
             await self.update_price(the_product=the_product, wb_standard_auth=wb_standard_auth)
@@ -29,18 +30,17 @@ class PMServices:
         print(brand)
         if not brand:
             return
-        the_product_json = await self.match_utils.get_product_data(article=the_product.nm_id)
+
+        the_product_json = the_product.the_product
 
         child_matched_products = await self.child_matched_products_queries.get_children_by_parent_id(
             parent_id=the_product.id)
-
         child_matched_products = [product for product in child_matched_products if the_product.nm_id != product.nm_id]
 
         if not child_matched_products:
             return
 
-        child_matched_products_json = await self.match_utils.get_detail_by_nms(
-            nms=[product.nm_id for product in child_matched_products])
+        child_matched_products_json = [child_matched_product.product for child_matched_product in child_matched_products]
 
         child_matched_products_json = await self.match_utils.check_stocks(products=child_matched_products_json)
 
@@ -61,10 +61,6 @@ class PMServices:
         print('my price', my_price)
         print('min price', min_price)
 
-        # if my_price < min_price:
-        #     print('SKIDYYYSH', '\n\n\n')
-        #     return
-
         if the_product.min_price < min_price:
             calculated_price = await self.pm_utils.calculate_price(
                 my_price=my_price, min_price=min_price, the_product_min_price=the_product.min_price,
@@ -74,7 +70,6 @@ class PMServices:
             calculated_price = the_product.min_price
         print(calculated_price)
         extended = the_product_json['detail'].get('extended')
-
         price_before_discount = await self.pm_utils.calculate_back_price(
             price=calculated_price, clientSale=extended.get('clientSale'), basicSale=extended.get('basicSale'))
 

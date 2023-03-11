@@ -73,7 +73,7 @@ class ChildMatchedProductQueries(BaseQueries):
     async def get_children_by_parent_id(self, parent_id):
         async with async_session() as session:
             result = await session.execute(
-                sa.select(self.model).where(self.model.parent_id == parent_id).where(self.model.is_correct == True)
+                sa.select(self.model).where(self.model.parent_id == parent_id)
             )
             return result.scalars().all()
 
@@ -107,6 +107,7 @@ class ChildMatchedProductQueries(BaseQueries):
 
 class ProductQueries(BaseQueries):
     model = Product
+    matched_product_queries = MatchedProductQueries()
     child_matched_product_queries = ChildMatchedProductQueries()
 
     async def fetch_all(self):
@@ -138,6 +139,35 @@ class ProductQueries(BaseQueries):
                        if product.nm_id not in all_nms]
 
         await self.save_in_db(instances=to_be_saved, many=True)
+
+    async def save_or_update(self, products):
+        db_instances = []
+        unmatched_products = await self.fetch_all()
+        matched_products = await self.matched_product_queries.fetch_all()
+        child_matched_products = await self.child_matched_product_queries.fetch_all()
+        saved_products = unmatched_products + matched_products + child_matched_products
+        all_nms = [product.nm_id for product in saved_products]
+        new_instances = [product for product in products if product.nm_id not in all_nms]
+
+        for saved_product in saved_products:
+            for new_product in products:
+
+                if saved_product.nm_id == new_product.nm_id:
+                    price = new_product.product['detail'].get('salePriceU')
+                    if price:
+                        price //= 100
+
+                    if isinstance(saved_product, Product):
+                        saved_product.product = new_product.product
+                    elif isinstance(saved_product, MatchedProduct):
+                        saved_product.price = price
+                        saved_product.the_product = new_product.product
+                    elif isinstance(saved_product, ChildMatchedProduct):
+                        saved_product.price = price
+                        saved_product.product = new_product.product
+                    db_instances.append(saved_product)
+
+        await self.save_in_db(instances=new_instances + db_instances, many=True)
 
 
 class BrandQueries(BaseQueries):
