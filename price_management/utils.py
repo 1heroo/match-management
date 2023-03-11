@@ -14,7 +14,7 @@ class PMUtils:
     @staticmethod
     async def calculate_price(my_price, the_product_min_price, min_price, percentage, min_step):
         percentage = min_price * percentage / 100
-        percentage = min_step if percentage > min_step else percentage
+        percentage = min_step if percentage < min_step else percentage
 
         my_price = min_price - percentage
 

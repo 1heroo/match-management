@@ -91,6 +91,7 @@ class MatchServices:
 
         # df[min_price_column] = df[min_price_column].isnull()
 
+        print(df)
         for index in df.index:
             article = int(df[article_column][index])
 

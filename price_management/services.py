@@ -65,7 +65,7 @@ class PMServices:
             )
         else:
             calculated_price = the_product.min_price
-
+        print(calculated_price)
         extended = the_product_json['detail'].get('extended')
 
         price_before_discount = await self.pm_utils.calculate_back_price(
