@@ -51,13 +51,13 @@ services:
 
     stdin_open: true
 
-  flower:
-    image: mher/flower:0.9.7
-    command: [ 'flower', 'amqp://user:pass@rabbitmq:5672/vhost', '--port=5555' ]
-    ports:
-      - 5555:5555
-    depends_on:
-      - rabbitmq
+#  flower:
+#    image: mher/flower:0.9.7
+#    command: [ 'flower', 'amqp://user:pass@rabbitmq:5672/vhost', '--port=5555' ]
+#    ports:
+#      - 5555:5555
+#    depends_on:
+#      - rabbitmq
 
 volumes:
   postgres_data:
