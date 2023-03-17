@@ -6,7 +6,6 @@ class BaseQueries:
 
     @staticmethod
     async def save_in_db(instances, many=False):
-
         async with async_session() as session:
 
             if many:

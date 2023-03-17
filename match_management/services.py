@@ -146,7 +146,9 @@ class MatchServices:
     async def check_by_identical_nms(self, matched, main_article):
         identical_nms = []
         for product in matched:
-            identical_nms += await self.match_utils.get_identical(article=product['card']['nm_id'])
+            identical = await self.match_utils.get_identical(article=product['card']['nm_id'])
+            if identical:
+                identical_nms += identical
 
         products = []
 

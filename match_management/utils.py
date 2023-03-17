@@ -31,11 +31,6 @@ class MatchUtils:
                     break
         return products
 
-    async def get_exact_category(self):
-        url = 'https://catalog.wb.ru/catalog/garden6/catalog?appType=1&cat=128824&couponsGeo=12,3,18,15,21&curr=rub&dest=-1257786&emp=0&fbrand=15489&lang=ru&locale=ru&page={page}&pricemarginCoeff=1.0&reg=0&regions=80,64,38,4,83,33,68,70,69,30,86,75,40,1,22,66,31,48,110,71&sort=popular&spp=0'
-        products = await self.get_catalog(url=url)
-        return products
-
     async def get_all_catalogs_from_brand(self, brand_ids):
         products = []
         for brand_id in brand_ids:
@@ -138,7 +133,6 @@ class MatchUtils:
                 'price': price,
                 'vendor': product['seller'].get('supplierName'),
                 'link': f"https://www.wildberries.ru/catalog/{product['card'].get('nm_id')}/detail.aspx?targetUrl=GP",
-                # 'by matching': by_matching
             }
 
             output_data.append(obj)

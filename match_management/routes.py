@@ -1,3 +1,4 @@
+import asyncio
 import io
 
 from fastapi import APIRouter, File
@@ -109,3 +110,75 @@ async def import_matched_products(file: bytes = File()):
         df=df, the_product_column=the_product_column, child_product_column=child_product_column)
 
     return Response(status_code=status.HTTP_200_OK)
+
+
+# @router.get('/')
+async def maina():
+
+    products = await match_utils.get_all_catalogs_from_brand(brand_ids=[
+        25609,
+        36933,
+    ])
+    all_ids = [item.get('id') for item in products]
+
+    # all_ids = all_ids[:5] + all_ids[-5:]
+    details = await match_utils.get_detail_by_nms(nms=all_ids)
+
+    categories_brand_1 = []
+    categories_brand_2 = []
+
+    unique_details_brand_1 = []
+    unique_details_brand_2 = []
+
+    for product in details:
+        category = product['card'].get('subj_name')
+        brand_id = product['detail'].get('brandId')
+        if brand_id == 25609:
+            if category not in categories_brand_1:
+                categories_brand_1.append(category)
+                unique_details_brand_1.append(product)
+        else:
+            if category not in categories_brand_2:
+                categories_brand_2.append(category)
+                unique_details_brand_2.append(product)
+
+    output_data_1 = []
+    output_data_2 = []
+    for detail in unique_details_brand_1:
+        extended = detail['detail'].get('extended')
+
+        if not extended:
+            continue
+
+        output_data_1.append({
+            'Категория': None,
+            'Подкатегория': detail['card'].get('subj_root_name'),
+            'Подкатегория2': detail['card'].get('subj_name'),
+            'STURM "brandId": 25609': extended.get('clientSale')
+        })
+    for detail in unique_details_brand_2:
+        extended = detail['detail'].get('extended')
+
+        if not extended:
+            continue
+
+        output_data_2.append({
+            'Категория': None,
+            'Подкатегория': detail['card'].get('subj_root_name'),
+            'Подкатегория2': detail['card'].get('subj_name'),
+            'STURM "brandId": 36933': extended.get('clientSale')
+        })
+    df1 = pd.DataFrame(output_data_1)
+    df2 = pd.DataFrame(output_data_2)
+
+    df = pd.merge(df1, df2, how='outer', left_on=['Подкатегория', 'Подкатегория2'], right_on=['Подкатегория', 'Подкатегория2'])
+    df = df.drop('Категория_y', axis=1)
+
+    output = io.BytesIO()
+    writer = pd.ExcelWriter(output, engine='xlsxwriter')
+    df.to_excel(writer, index=False)
+    writer.save()
+
+    return StreamingResponse(io.BytesIO(output.getvalue()),
+                             media_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                             headers={'Content-Disposition': f'attachment; filename="characteristics.xlsx"'})
