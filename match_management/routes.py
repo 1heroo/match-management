@@ -122,7 +122,7 @@ async def import_rrc(sheet_name: str = None, file: bytes = File()):
 
     file_name = str(int(time.time())) + '.csv'
 
-    df = pd.read_excel(file, sheet_name=sheet_name)
+    df = pd.read_excel(file, sheet_name=sheet_name, header=None)
     df = xlsx_utils.handle_xlsx(df=df, file_name=file_name)
 
     article_column = xlsx_utils.find_article_column(df=df)

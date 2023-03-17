@@ -13,7 +13,7 @@ class ProductAdmin(ModelView, model=Product):
 
 class MatchedProductAdmin(ModelView, model=MatchedProduct):
     page_size = 100
-    column_list = ['nm_id', 'title', 'brand', 'brand_id', 'subj_name', 'subj_root_name', 'min_price', 'price', 'vendor_code', 'checked_nms']
+    column_list = ['nm_id', 'title', 'brand', 'brand_id', 'subj_name', 'subj_root_name', 'min_price', 'price', 'rrc', 'vendor_code', 'checked_nms']
     column_searchable_list = ['nm_id']
 
 

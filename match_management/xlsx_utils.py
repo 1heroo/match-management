@@ -20,7 +20,7 @@ class XlsxUtils:
         columns = df.columns
         for index in df.index[:100]:
             for column in columns:
-                if df[column][index] in article_columns:
+                if df[column][index] in article_columns or column in article_columns:
                     return index
 
     @staticmethod
