@@ -72,7 +72,7 @@ class PMServices:
         if not extended:
             return
         price_before_discount = await self.pm_utils.calculate_back_price(
-            price=calculated_price, clientSale=extended.get('clientSale'), basicSale=extended.get('basicSale'))
+            price=calculated_price, clientSale=extended.get('clientSale', 0), basicSale=extended.get('basicSale'))
 
         print(price_before_discount)
         await self.wb_api_utils.update_prices(
