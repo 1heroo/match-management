@@ -1,5 +1,7 @@
 import asyncio
 import io
+import os
+import time
 
 from fastapi import APIRouter, File
 import pandas as pd
@@ -11,6 +13,7 @@ from match_management.services import MatchServices
 from match_management.utils import MatchUtils
 import glob
 
+from match_management.xlsx_utils import XlsxUtils
 
 router = APIRouter(prefix='/mm', tags=['Match management'])
 
@@ -21,6 +24,7 @@ match_utils = MatchUtils()
 child_matched_queries = ChildMatchedProductQueries()
 product_queries = ProductQueries()
 brand_queries = BrandQueries()
+xlsx_utils = XlsxUtils()
 
 
 @router.get('/lunch-matching-with_local_file/')
@@ -108,6 +112,27 @@ async def import_matched_products(file: bytes = File()):
     child_product_column = df['Сопоставленный Артикул WB'].name
     await matched_services.manually_add_child_matches(
         df=df, the_product_column=the_product_column, child_product_column=child_product_column)
+
+    return Response(status_code=status.HTTP_200_OK)
+
+
+@router.post('/import-rrc/')
+async def import_rrc(sheet_name: str = None, file: bytes = File()):
+    sheet_name = 0 if sheet_name is None else sheet_name
+
+    file_name = str(int(time.time())) + '.csv'
+
+    df = pd.read_excel(file, sheet_name=sheet_name)
+    df = xlsx_utils.handle_xlsx(df=df, file_name=file_name)
+
+    article_column = xlsx_utils.find_article_column(df=df)
+    price_column = xlsx_utils.find_price_column(df=df)
+    print(article_column, price_column)
+    if price_column is None or article_column is None:
+        return False
+
+    await matched_services.import_rrc(df=df, price_column=price_column, article_column=article_column)
+    os.remove(file_name)
 
     return Response(status_code=status.HTTP_200_OK)
 

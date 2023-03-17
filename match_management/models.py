@@ -31,6 +31,7 @@ class MatchedProduct(Base):
     vendor_code = sa.Column(sa.String)
     price = sa.Column(sa.Integer)
     min_price = sa.Column(sa.Integer)
+    rrc = sa.Column(sa.Integer)
     the_product = sa.Column(JSONB)
     checked_nms = sa.Column(JSONB)
     matched_products = relationship('ChildMatchedProduct', back_populates='parent')

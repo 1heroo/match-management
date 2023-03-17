@@ -11,6 +11,7 @@ from match_management.admin import ProductAdmin, MatchedProductAdmin, ChildMatch
 from match_management.routes import router as mm_router
 from price_management.routes import router as pm_router
 from comparison_management.routes import router as cm_router
+from external_api.routes import router as api_router
 
 
 app = FastAPI(title='Сопоставление товаров и динамическое управление ценой')
@@ -20,6 +21,8 @@ app = FastAPI(title='Сопоставление товаров и динамич
 app.include_router(mm_router)
 app.include_router(pm_router)
 app.include_router(cm_router)
+app.include_router(api_router)
+
 # admin staff
 admin = Admin(app, async_engine)
 

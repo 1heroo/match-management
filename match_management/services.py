@@ -87,7 +87,8 @@ class MatchServices:
         self.child_matched_product_queries = ChildMatchedProductQueries()
         self.pm_services = PMServices()
 
-    async def find_matches(self, df, article_column, min_price_column, products):
+    async def find_matches(
+            self, df: pd.DataFrame, article_column: str, min_price_column: str, products: list) -> None:
 
         # df[min_price_column] = df[min_price_column].isnull()
 
@@ -118,7 +119,7 @@ class MatchServices:
                 product['card'].get('nm_id') for product in matched
             ])
 
-    async def match_management(self, article, products):
+    async def match_management(self, article: int, products: list) -> tuple:
         _, matched = await self.find_similar_to_article(article=article, products=products)
 
         the_product, matched_by_wb_recs = await self.check_by_identical_nms(matched=matched, main_article=article)
@@ -126,7 +127,7 @@ class MatchServices:
 
         return the_product, matched
 
-    async def find_similar_to_article(self, article, products=None):
+    async def find_similar_to_article(self, article, products=None) -> tuple:
         the_product = await self.match_utils.get_product_data(article=article)
 
         output_data = []
@@ -143,7 +144,7 @@ class MatchServices:
 
         return the_product, output_data
 
-    async def check_by_identical_nms(self, matched, main_article):
+    async def check_by_identical_nms(self, matched: list, main_article: int) -> tuple:
         identical_nms = []
         for product in matched:
             identical = await self.match_utils.get_identical(article=product['card']['nm_id'])
@@ -169,7 +170,7 @@ class MatchServices:
         matched, unmatched = await self.find_similar_to_article(article=main_article, products=products)
         return matched, unmatched
 
-    async def check_by_visual_similar(self, main_article):
+    async def check_by_visual_similar(self, main_article: int) -> tuple:
         nm_ids = await self.match_utils.get_in_visual_similar(article=main_article)
 
         products = []
@@ -190,7 +191,7 @@ class MatchServices:
         matched, unmatched = await self.find_similar_to_article(article=main_article, products=products)
         return matched, unmatched
 
-    async def check_by_search(self, main_article):
+    async def check_by_search(self, main_article: int) -> tuple:
         the_product = await self.match_utils.get_product_data(article=main_article)
 
         model = None
@@ -225,7 +226,7 @@ class MatchServices:
         return matched, unmatched
 
     @staticmethod
-    async def remove_duplicate_nms(products):
+    async def remove_duplicate_nms(products: list[dict]) -> list[dict]:
         unique = []
         checked = []
         for product in products:
@@ -236,12 +237,12 @@ class MatchServices:
                 checked.append(article)
         return unique
 
-    async def aggregate_data_management(self, brand_ids):
+    async def aggregate_data_management(self, brand_ids: list[int]):
         products = await self.match_utils.get_products(brand_ids)
         prepared_for_saving_products = await self.match_utils.prepare_wb_products_for_saving(products=products)
         await self.product_queries.save_or_update(products=prepared_for_saving_products)
 
-    async def remove_from_child_matched_products(self, df: pd.DataFrame):
+    async def remove_from_child_matched_products(self, df: pd.DataFrame) -> None:
         wb_standard_auth = self.pm_services.wb_api_utils.api_auth(token=settings.WB_STANDARD_API_TOKEN)
 
         the_product = None
@@ -275,7 +276,7 @@ class MatchServices:
         await self.product_queries.save_in_db(instances=prepared_for_saving_products, many=True)
         await self.matched_product_queries.update_checked(nm_id=the_product.nm_id, checked_nms=checked_nms)
 
-    async def get_products_with_no_children(self):
+    async def get_products_with_no_children(self) -> list[dict]:
         matched_products = await self.matched_product_queries.fetch_all()
         matched_products_with_children = await self.matched_product_queries.get_matched_products_with_children()
 
@@ -284,7 +285,8 @@ class MatchServices:
         products = await self.match_utils.prepare_output(products=matched_products, the_product=True)
         return products
 
-    async def manually_add_child_matches(self, df, the_product_column, child_product_column):
+    async def manually_add_child_matches(
+            self, df: pd.DataFrame, the_product_column: str, child_product_column: str) -> None:
 
         wb_standard_auth = self.pm_services.wb_api_utils.api_auth(settings.WB_STANDARD_API_TOKEN)
 
@@ -320,3 +322,20 @@ class MatchServices:
 
         await self.child_matched_product_queries.get_or_create(child_matched_products=children_to_be_saved)
         await self.product_queries.delete_by_nms(nms=nms_to_be_removed_from_unmatched_products)
+
+    async def import_rrc(self, df: pd.DataFrame, article_column: str, price_column: str) -> None:
+        matched_products = [{'vendor_code': product.vendor_code, 'product': product}
+                            for product in await self.matched_product_queries.fetch_all()]
+        matched_product_df = pd.DataFrame(matched_products)
+        no_bland_vendor_code = matched_product_df.vendor_code.apply(lambda item: item.split('bland')[-1])
+        matched_product_df['no_bland_vendor_code'] = no_bland_vendor_code
+
+        df = pd.merge(df, matched_product_df, how='inner', left_on=article_column, right_on='no_bland_vendor_code')
+
+        products_to_be_saved = []
+        for index in df.index:
+            matched_product = df['product'][index]
+            matched_product.rrc = int(df[price_column][index])
+            products_to_be_saved.append(matched_product)
+
+        await self.matched_product_queries.save_in_db(products_to_be_saved, many=True)
