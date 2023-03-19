@@ -54,6 +54,13 @@ class MatchedProductQueries(BaseQueries):
             )
             return result.scalars().all()
 
+    async def get_matched_products_by_brand_id(self, brand_id):
+        async with async_session() as session:
+            result = await session.execute(
+                sa.select(self.model).where(self.model.brand_id == brand_id)
+            )
+            return result.scalars().all()
+
 
 class ChildMatchedProductQueries(BaseQueries):
     model = ChildMatchedProduct

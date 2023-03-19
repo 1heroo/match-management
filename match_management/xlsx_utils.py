@@ -1,7 +1,35 @@
+import io
+import os
+import zipfile
+
 import pandas as pd
+from starlette.responses import Response
 
 
 class XlsxUtils:
+
+    @staticmethod
+    def zip_response(filenames):
+        zip_filename = "report.zip"
+
+        s = io.BytesIO()
+        zf = zipfile.ZipFile(s, "w")
+
+        for fpath in filenames:
+            fdir, fname = os.path.split(fpath)
+            print(fpath)
+            zf.write(fpath, fname)
+
+        zf.close()
+
+        for file in filenames:
+            os.remove(file)
+
+        resp = Response(s.getvalue(), media_type="application/x-zip-compressed", headers={
+            'Content-Disposition': f'attachment;filename={zip_filename}'
+        })
+        return resp
+
     def handle_xlsx(self, df: pd.DataFrame, file_name) -> pd.DataFrame:
         index = self.search_table_begin(df=df)
         df = df.loc[index:]

@@ -1,5 +1,7 @@
 import asyncio
 import json
+
+from match_management.models import ChildMatchedProduct, MatchedProduct
 from match_management.utils import make_head, make_tail
 import aiohttp
 from comparison_management.whs import whs as wh_dicts
@@ -8,13 +10,13 @@ from comparison_management.whs import whs as wh_dicts
 class CMUtils:
 
     @staticmethod
-    async def make_get_request(url, headers):
+    async def make_get_request(url: str, headers: dict) -> dict:
         async with aiohttp.ClientSession(trust_env=True, headers=headers) as session:
             response = await session.get(url=url)
             if response.status == 200:
                 return json.loads(await response.text())
 
-    async def get_product_data(self, article):
+    async def get_product_data(self, article: int) -> dict:
         card_url = make_head(int(article)) + make_tail(str(article), 'ru/card.json')
         obj = {}
         card = await self.make_get_request(url=card_url, headers={})
@@ -41,7 +43,7 @@ class CMUtils:
         })
         return obj
 
-    async def get_detail_by_nms(self, nms):
+    async def get_detail_by_nms(self, nms: list[int]) -> list[dict]:
         output_data = []
         tasks = []
         count = 1
@@ -61,7 +63,7 @@ class CMUtils:
         return output_data
 
     @staticmethod
-    async def prepare_chars_for_output(products):
+    async def prepare_chars_for_output(products: list[dict]) -> list[dict]:
         output_data = []
 
         for product in products:
@@ -138,4 +140,22 @@ class CMUtils:
             })
             obj.update(wh_dict)
             output_data.append(obj)
+        return output_data
+
+    @staticmethod
+    async def check_prices_and_prepare_for_output(
+            the_product: MatchedProduct, children: list[ChildMatchedProduct]) -> list[dict]:
+        output_data = []
+
+        for child in children:
+            if the_product.price < child.price:
+                continue
+
+            output_data.append({
+                'article wb': child.nm_id,
+                'vendor_code': child.vendor_code,
+                'vendor': child.vendor_name,
+                'brand': child.brand,
+                'price': child.price,
+            })
         return output_data

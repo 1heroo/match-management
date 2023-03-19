@@ -5,9 +5,11 @@ from fastapi import APIRouter
 from starlette.responses import StreamingResponse
 
 from comparison_management.services import CMServices
+from match_management.xlsx_utils import XlsxUtils
 
-router = APIRouter(prefix='/compare-management', tags=['Compare management'])
+router = APIRouter(prefix='/compare-management', tags=['Utils (comparison, other..)'])
 
+xlsx_utils = XlsxUtils()
 cm_services = CMServices()
 
 
@@ -27,3 +29,7 @@ async def get_characteristics(article_wb: int):
                              headers={'Content-Disposition': f'attachment; filename="characteristics.xlsx"'})
 
 
+@router.get('get-not-profitable-products/{brand_id}/')
+async def get_not_profitable_products(brand_id: int):
+    cached_files = await cm_services.not_profitable_management(brand_id=brand_id)
+    return xlsx_utils.zip_response(filenames=cached_files)
