@@ -4,3 +4,4 @@ __pycache__/
 .env
 celerybeat-schedule
 file_db/
+cached_files/

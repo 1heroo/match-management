@@ -9,9 +9,7 @@ from starlette.responses import Response
 class XlsxUtils:
 
     @staticmethod
-    def zip_response(filenames):
-        zip_filename = "report.zip"
-
+    def zip_response(filenames, zip_filename):
         s = io.BytesIO()
         zf = zipfile.ZipFile(s, "w")
 

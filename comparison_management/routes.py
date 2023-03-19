@@ -32,4 +32,4 @@ async def get_characteristics(article_wb: int):
 @router.get('get-not-profitable-products/{brand_id}/')
 async def get_not_profitable_products(brand_id: int):
     cached_files = await cm_services.not_profitable_management(brand_id=brand_id)
-    return xlsx_utils.zip_response(filenames=cached_files)
+    return xlsx_utils.zip_response(filenames=cached_files, zip_filename='not-profitable-products.zip')

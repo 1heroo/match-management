@@ -145,12 +145,22 @@ class CMUtils:
     @staticmethod
     async def check_prices_and_prepare_for_output(
             the_product: MatchedProduct, children: list[ChildMatchedProduct]) -> list[dict]:
-        output_data = []
+        if not children:
+            return []
+
+        output_data = [{
+                'article wb': the_product.nm_id,
+                'vendor_code': the_product.vendor_code,
+                'vendor': 'Blandova',
+                'brand': the_product.brand,
+                'price': the_product.price,
+            }]
+        min_product = min(children, key=lambda item: item.price)
+
+        if min_product.price >= the_product.price:
+            return []
 
         for child in children:
-            if the_product.price < child.price:
-                continue
-
             output_data.append({
                 'article wb': child.nm_id,
                 'vendor_code': child.vendor_code,
@@ -158,4 +168,14 @@ class CMUtils:
                 'brand': child.brand,
                 'price': child.price,
             })
-        return output_data
+
+        articles = []
+        unique_output = []
+
+        for product in output_data:
+            article = product.get('article wb')
+            if article not in articles:
+                articles.append(article)
+                unique_output.append(product)
+
+        return sorted(unique_output, key=lambda item: item.get('price'))
