@@ -45,6 +45,7 @@ async def launch_matching_with_files():
 async def main(file: bytes = File()):
     nms = [product.nm_id for product in await product_queries.fetch_all()]
     products = await match_utils.get_detail_by_nms(nms=nms)
+    print(len(products))
 
     df = pd.read_excel(file)
     article_column = df['Артикул WB'].name
