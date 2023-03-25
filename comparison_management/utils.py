@@ -217,3 +217,16 @@ class CMUtils:
                 unique_output.append(product)
 
         return sorted(unique_output, key=lambda item: item.get('price'))
+
+    @staticmethod
+    def prepare_output(child_products: list[ChildMatchedProduct]) -> list[dict]:
+        output_data = []
+        for child in child_products:
+            output_data.append({
+                'article wb': child.nm_id,
+                'vendor_code': child.vendor_code,
+                'vendor': child.vendor_name,
+                'brand': child.brand,
+                'price': child.price,
+            })
+        return output_data

@@ -1,7 +1,7 @@
 import io
 
 import pandas as pd
-from fastapi import APIRouter
+from fastapi import APIRouter, File
 from starlette.responses import StreamingResponse
 
 from comparison_management.services import CMServices
@@ -46,3 +46,11 @@ async def get_profitable_products(brand_id: int):
 async def get_child_less_then_three():
     cached_files = await cm_services.get_child_less_than_three()
     return xlsx_utils.zip_response(filenames=cached_files, zip_filename='less_than_tree.zip')
+
+
+@router.post('/get-children-by-articles-wb}/')
+async def get_children_by_articles(file: bytes = File()):
+    df = pd.read_excel(file)
+    article_column = 'Артикул WB'
+    cached_files = await cm_services.get_children_by_articles_wb(df=df, article_column=article_column)
+    return xlsx_utils.zip_response(filenames=cached_files, zip_filename='child_products.zip')
