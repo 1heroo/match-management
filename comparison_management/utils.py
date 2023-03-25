@@ -229,4 +229,4 @@ class CMUtils:
                 'brand': child.brand,
                 'price': child.price,
             })
-        return output_data
+        return sorted(output_data, key=lambda item: item.get('price'))
