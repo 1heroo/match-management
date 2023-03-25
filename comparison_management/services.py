@@ -94,6 +94,7 @@ class CMServices:
 
         cached_files = []
         for index in df.index:
+            print(df.columns)
             nm_id = int(df[article_column][index])
             the_product = await self.matched_product_queries.get_product_by_nm(nm=nm_id)
 
