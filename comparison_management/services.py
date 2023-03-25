@@ -38,7 +38,7 @@ class CMServices:
             child_matched_products = await self.child_matched_product_queries.get_children_by_parent_nm_id(
                 parent_nm_id=the_product.nm_id)
 
-            suitable_children = await self.cm_utils.check_prices_and_prepare_for_output(
+            suitable_children = await self.cm_utils.not_profitable_check_prices_and_prepare_for_output(
                 the_product=the_product, children=child_matched_products)
             if suitable_children:
                 file_name = 'cached_files/' + str(the_product.nm_id) \
@@ -46,6 +46,41 @@ class CMServices:
                             str(datetime.date.today()) + '.xlsx'
 
                 df = pd.DataFrame(suitable_children)
+                df.to_excel(file_name, index=False)
+                cached_files.append(file_name)
+        return cached_files
+
+    async def profitable_management(self, brand_id: int) -> list[str]:
+        matched_products = await self.matched_product_queries.get_matched_products_by_brand_id(brand_id=brand_id)
+        cached_files = []
+        for the_product in matched_products:
+            child_matched_products = await self.child_matched_product_queries.get_children_by_parent_nm_id(
+                parent_nm_id=the_product.nm_id)
+
+            suitable_children = await self.cm_utils.profitable_check_prices_and_prepare_for_output(
+                the_product=the_product, children=child_matched_products)
+            if suitable_children:
+                file_name = 'cached_files/' + str(the_product.nm_id) \
+                            + '_' + \
+                            str(datetime.date.today()) + '.xlsx'
+
+                df = pd.DataFrame(suitable_children)
+                df.to_excel(file_name, index=False)
+                cached_files.append(file_name)
+        return cached_files
+
+    async def get_child_less_than_three(self) -> list[str]:
+        matched_products = await self.matched_product_queries.fetch_all()
+
+        cached_files = []
+        for the_product in matched_products:
+            child_matched_products = await self.child_matched_product_queries.get_children_by_parent_id(
+                parent_id=the_product.id)
+            if len(child_matched_products) <= 3:
+                file_name = 'cached_files/' + str(the_product.nm_id) \
+                            + '_' + \
+                            str(datetime.date.today()) + '.xlsx'
+                df = pd.DataFrame(child_matched_products)
                 df.to_excel(file_name, index=False)
                 cached_files.append(file_name)
         return cached_files

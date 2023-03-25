@@ -9,6 +9,7 @@ from match_management.xlsx_utils import XlsxUtils
 
 router = APIRouter(prefix='/compare-management', tags=['Utils (comparison, other..)'])
 
+
 xlsx_utils = XlsxUtils()
 cm_services = CMServices()
 
@@ -33,3 +34,15 @@ async def get_characteristics(article_wb: int):
 async def get_not_profitable_products(brand_id: int):
     cached_files = await cm_services.not_profitable_management(brand_id=brand_id)
     return xlsx_utils.zip_response(filenames=cached_files, zip_filename='not-profitable-products.zip')
+
+
+@router.get('get-profitable-products/{brand_id}/')
+async def get_profitable_products(brand_id: int):
+    cached_files = await cm_services.profitable_management(brand_id=brand_id)
+    return xlsx_utils.zip_response(filenames=cached_files, zip_filename='profitable-products.zip')
+
+
+@router.get('/get-child-less-than-three/')
+async def get_child_less_then_three():
+    cached_files = await cm_services.get_child_less_than_three()
+    return xlsx_utils.zip_response(filenames=cached_files, zip_filename='less_than_tree.zip')

@@ -143,7 +143,7 @@ class CMUtils:
         return output_data
 
     @staticmethod
-    async def check_prices_and_prepare_for_output(
+    async def not_profitable_check_prices_and_prepare_for_output(
             the_product: MatchedProduct, children: list[ChildMatchedProduct]) -> list[dict]:
         if not children:
             return []
@@ -158,6 +158,44 @@ class CMUtils:
         min_product = min(children, key=lambda item: item.price)
 
         if min_product.price >= the_product.price:
+            return []
+
+        for child in children:
+            output_data.append({
+                'article wb': child.nm_id,
+                'vendor_code': child.vendor_code,
+                'vendor': child.vendor_name,
+                'brand': child.brand,
+                'price': child.price,
+            })
+
+        articles = []
+        unique_output = []
+
+        for product in output_data:
+            article = product.get('article wb')
+            if article not in articles:
+                articles.append(article)
+                unique_output.append(product)
+
+        return sorted(unique_output, key=lambda item: item.get('price'))
+
+    @staticmethod
+    async def profitable_check_prices_and_prepare_for_output(
+            the_product: MatchedProduct, children: list[ChildMatchedProduct]) -> list[dict]:
+        if not children:
+            return []
+
+        output_data = [{
+                'article wb': the_product.nm_id,
+                'vendor_code': the_product.vendor_code,
+                'vendor': 'Blandova',
+                'brand': the_product.brand,
+                'price': the_product.price,
+            }]
+        min_product = min(children, key=lambda item: item.price)
+
+        if min_product.price != the_product.price:
             return []
 
         for child in children:
