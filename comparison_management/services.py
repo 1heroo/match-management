@@ -95,7 +95,7 @@ class CMServices:
     async def get_children_by_articles_wb(self, df: pd.DataFrame) -> list[str]:
 
         cached_files = []
-        seria = df['nm_id']
+        seria = df['Артикул WB']
         for nm_id in seria:
             the_product = await self.matched_product_queries.get_product_by_nm(nm=nm_id)
 
