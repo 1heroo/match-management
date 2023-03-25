@@ -225,7 +225,7 @@ class CMUtils:
             output_data.append({
                 'article wb': child.nm_id,
                 'vendor_code': child.vendor_code,
-                'vendor': child.vendor_name,
+                'vendor': child.vendor_name if isinstance(child, ChildMatchedProduct) else 'blandova',
                 'brand': child.brand,
                 'price': child.price,
             })
