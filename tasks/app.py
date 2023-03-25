@@ -21,7 +21,7 @@ app.conf.beat_schedule = {
     },
     'price_management': {
         'task': 'tasks.tasks.price_management',
-        'schedule': 60 * 60
+        'schedule': 60 * 60 * 3
         # 'schedule': crontab(minute=0, hour=12),
     }
 }
