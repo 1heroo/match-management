@@ -1,6 +1,17 @@
 version: "3.3"
 
 services:
+  nginx:
+    build:
+      context: ./nginx/
+    ports:
+      - '80:8000'
+    volumes:
+      - ./nginx/conf.d/:/etc/nginx/conf.d/
+      - static_files:/code/source/sqladmin/statics/css/
+    depends_on:
+      - web
+
   web:
     build: .
     command: >
@@ -53,3 +64,5 @@ services:
 
 volumes:
   postgres_data:
+  static_files:
+
