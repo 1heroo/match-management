@@ -48,7 +48,7 @@ async def get_child_less_then_three():
     return xlsx_utils.zip_response(filenames=cached_files, zip_filename='less_than_tree.zip')
 
 
-@router.post('/get-children-by-articles-wb}/')
+@router.post('/get-children-by-articles-wb/')
 async def get_children_by_articles(file: bytes = File()):
     df = pd.read_excel(file)
     article_column = 'Артикул WB'
