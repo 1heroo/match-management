@@ -85,17 +85,18 @@ class CMServices:
                 file_name = 'cached_files/' + str(the_product.nm_id) \
                             + '_' + \
                             str(datetime.date.today()) + '.xlsx'
-                df = pd.DataFrame(child_matched_products)
+                df = pd.DataFrame(
+                    self.cm_utils.prepare_output(child_products=child_matched_products)
+                )
                 df.to_excel(file_name, index=False)
                 cached_files.append(file_name)
         return cached_files
 
-    async def get_children_by_articles_wb(self, df: pd.DataFrame, article_column: str) -> list[str]:
+    async def get_children_by_articles_wb(self, df: pd.DataFrame) -> list[str]:
 
         cached_files = []
-        for index in df.index:
-            print(df.columns)
-            nm_id = int(df[article_column][index])
+        seria = df['nm_id']
+        for nm_id in seria:
             the_product = await self.matched_product_queries.get_product_by_nm(nm=nm_id)
 
             if not the_product:

@@ -51,6 +51,5 @@ async def get_child_less_then_three():
 @router.post('/get-children-by-articles-wb/')
 async def get_children_by_articles(file: bytes = File()):
     df = pd.read_excel(file)
-    article_column = 'Артикул WB'
-    cached_files = await cm_services.get_children_by_articles_wb(df=df, article_column=article_column)
+    cached_files = await cm_services.get_children_by_articles_wb(df=df)
     return xlsx_utils.zip_response(filenames=cached_files, zip_filename='child_products.zip')
