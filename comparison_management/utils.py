@@ -228,5 +228,6 @@ class CMUtils:
                 'vendor': child.vendor_name if isinstance(child, ChildMatchedProduct) else 'blandova',
                 'brand': child.brand,
                 'price': child.price,
+                'link': f'https://www.wildberries.ru/catalog/{child.nm_id}/detail.aspx?targetUrl=MI'
             })
         return sorted(output_data, key=lambda item: item.get('price'))
