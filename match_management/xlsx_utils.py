@@ -62,7 +62,7 @@ class XlsxUtils:
     def find_article_column(df: pd.DataFrame):
         columns = df.columns
 
-        article_list = ['артикул', "Артикул", "Артикулы", "артикулы"]
+        article_list = ['артикул', "Артикул", "Артикулы", "артикулы", 'Артикул WB']
         for column in columns:
             if column in article_list:
                 return column
@@ -72,6 +72,15 @@ class XlsxUtils:
         columns = df.columns
 
         price_list = ["РРЦ", "МДЦ", 'МРЦ', "РРЦ Цена", "МДЦ АКЦИЯ!", 'Цена РРЦ', 'РРЦ Wildberries, руб']
+        for column in columns:
+            if column in price_list:
+                return column
+
+    @staticmethod
+    def find_min_price_column(df: pd.DataFrame):
+        columns = df.columns
+
+        price_list = ['Минимальная цена']
         for column in columns:
             if column in price_list:
                 return column

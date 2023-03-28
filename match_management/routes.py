@@ -6,7 +6,7 @@ import time
 from fastapi import APIRouter, File
 import pandas as pd
 from starlette import status
-from starlette.responses import StreamingResponse, Response
+from starlette.responses import StreamingResponse, Response, JSONResponse
 
 from match_management.queries import ProductQueries, ChildMatchedProductQueries, MatchedProductQueries, BrandQueries
 from match_management.services import MatchServices
@@ -130,12 +130,33 @@ async def import_rrc(sheet_name: str = None, file: bytes = File()):
     price_column = xlsx_utils.find_price_column(df=df)
     print(article_column, price_column)
     if price_column is None or article_column is None:
-        return False
+        return JSONResponse(content={'message': 'Не правильная струкутра в экзель'},
+                            status_code=status.HTTP_400_BAD_REQUEST)
 
     await matched_services.import_rrc(df=df, price_column=price_column, article_column=article_column)
     os.remove(file_name)
 
     return Response(status_code=status.HTTP_200_OK)
+
+
+@router.post('/import-min-prices/')
+async def import_min_prices(sheet_name: str = None, file: bytes = File()):
+    sheet_name = 0 if sheet_name is None else sheet_name
+    df = pd.read_excel(file, sheet_name=sheet_name, header=None)
+    file_name = str(int(time.time())) + '.csv'
+    df = xlsx_utils.handle_xlsx(df=df, file_name=file_name)
+
+    article_column = xlsx_utils.find_article_column(df=df)
+    price_column = xlsx_utils.find_min_price_column(df=df)
+    if price_column is None or article_column is None:
+        return JSONResponse(content={'message': 'Не правильная струкутра в экзель'},
+                            status_code=status.HTTP_400_BAD_REQUEST)
+
+    await matched_services.import_min_price(df=df, price_column=price_column, article_column=article_column)
+    os.remove(file_name)
+
+    return Response(status_code=status.HTTP_200_OK)
+
 
 # @router.get('/')
 async def maina():

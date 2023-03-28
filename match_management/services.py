@@ -341,3 +341,17 @@ class MatchServices:
 
         await self.matched_product_queries.save_in_db(products_to_be_saved, many=True)
 
+    async def import_min_price(self, df: pd.DataFrame, article_column: str, price_column: str) -> None:
+        matched_products = [{'nm_id': product.nm_id, 'product': product}
+                            for product in await self.matched_product_queries.fetch_all()]
+        matched_product_df = pd.DataFrame(matched_products)
+
+        df = pd.merge(df, matched_product_df, how='inner', left_on=article_column, right_on='nm_id')
+
+        products_to_be_saved = []
+        for index in df.index:
+            matched_product = df['product'][index]
+            matched_product.min_price = int(df[price_column][index])
+            products_to_be_saved.append(matched_product)
+
+        await self.matched_product_queries.save_in_db(products_to_be_saved, many=True)
