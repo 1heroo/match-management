@@ -65,7 +65,9 @@ class FilterLevels:
 
             if model2 == model1 and the_product['detail'].get('brand') == product['detail'].get('brand') \
                     and model2 in product_description \
-                    and model2 in product['card'].get('imt_name', ''):
+                    and model2 in product['card'].get('imt_name', '') \
+                    and model2 in product['detail'].get('name', ''):
+
                 matched.append(product)
             else:
                 unmatched.append(product)
