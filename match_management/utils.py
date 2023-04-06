@@ -1,20 +1,12 @@
 import asyncio
 import json
+
+from core.utils import BaseUtils
 from match_management.models import Product, MatchedProduct, ChildMatchedProduct
 import aiohttp
 
 
-class MatchUtils:
-
-    def __init__(self):
-        pass
-
-    @staticmethod
-    async def make_get_request(url, headers):
-        async with aiohttp.ClientSession(trust_env=True, headers=headers) as session:
-            response = await session.get(url=url)
-            if response.status == 200:
-                return json.loads(await response.text())
+class MatchUtils(BaseUtils):
 
     async def get_catalog(self, url):
         products = []
@@ -107,14 +99,6 @@ class MatchUtils:
         url = f'https://identical-products.wildberries.ru/api/v1/identical?nmID={article}'
         return await self.make_get_request(url=url, headers={})
 
-    async def get_in_visual_similar(self, article):
-        url = f'https://in-visual-similar.wildberries.ru/?nm={article}'
-        return await self.make_get_request(url=url, headers={})
-
-    async def get_in_search(self, query):
-        url = f'https://search-goods.wildberries.ru/search?query={query}'
-        return await self.make_get_request(url=url, headers={})
-
     @staticmethod
     async def prepare_output(products, the_product=False):
         output_data = []
@@ -149,7 +133,7 @@ class MatchUtils:
         return output_data
 
     @staticmethod
-    async def prepare_matched_product(the_product, min_price):
+    def prepare_matched_product(the_product, min_price=None):
         price = the_product['detail'].get('salePriceU')
         if price:
             price //= 100
@@ -213,6 +197,18 @@ class MatchUtils:
                 output_data.append(the_product)
 
         return output_data
+
+    @staticmethod
+    def remove_duplicate_nms(products: list[dict]) -> list[dict]:
+        unique = []
+        checked = []
+        for product in products:
+            article = product['card']['nm_id']
+
+            if article not in checked:
+                unique.append(product)
+                checked.append(article)
+        return unique
 
 
 def make_head(article: int):

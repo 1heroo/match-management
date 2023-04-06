@@ -51,7 +51,7 @@ class PMServices:
         my_price = the_product_json['detail'].get('salePriceU')
         min_price = min_product_json['detail'].get('salePriceU')
 
-        if not my_price or not min_price:
+        if not my_price or min_price is None:
             return
         else:
             my_price /= 100
@@ -59,6 +59,9 @@ class PMServices:
 
         print('my price', my_price)
         print('min price', min_price)
+
+        if the_product.min_price is None:
+            return
 
         if the_product.min_price < min_price:
             calculated_price = await self.pm_utils.calculate_price(

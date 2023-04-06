@@ -4,7 +4,7 @@ from starlette.responses import JSONResponse
 
 from match_management.queries import MatchedProductQueries, ChildMatchedProductQueries
 
-router = APIRouter(prefix='/api/v1/matched-product', tags=['API'])
+router = APIRouter(prefix='/api/v1/matched-product', tags=['external Api'])
 
 
 matched_product_queries = MatchedProductQueries()

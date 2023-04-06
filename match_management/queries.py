@@ -31,9 +31,10 @@ class MatchedProductQueries(BaseQueries):
         for saved_matched_product in saved_matched_products:
             if the_product.nm_id == saved_matched_product.nm_id:
                 saved_matched_product.min_price = the_product.min_price
+                saved_matched_product.the_product = the_product.the_product
                 product = saved_matched_product
 
-        if not product:
+        if product is None:
             product = the_product
         await self.save_in_db(instances=product)
         return product
