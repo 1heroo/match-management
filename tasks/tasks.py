@@ -8,14 +8,14 @@ host = settings.HOST
 
 @shared_task()
 def product_aggregator():
-    requests.get(host + '/mm/aggregate-products/')
+    requests.get(host + '/match-management/aggregate-products/')
     print("aggregated all products")
     return True
 
 
 @shared_task()
 def launch_matching():
-    requests.get(host + '/mm/lunch-matching-with_local_file/')
+    requests.get(host + '/match-management/launch-matching/')
     print('launched matching')
     return True
 

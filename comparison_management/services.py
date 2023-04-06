@@ -86,7 +86,7 @@ class CMServices:
                             + '_' + \
                             str(datetime.date.today()) + '.xlsx'
                 df = pd.DataFrame(
-                    self.cm_utils.prepare_output(child_products=child_matched_products)
+                    self.cm_utils.prepare_output_children(child_products=child_matched_products)
                 )
                 df.to_excel(file_name, index=False)
                 cached_files.append(file_name)
@@ -104,7 +104,7 @@ class CMServices:
 
             children = await self.child_matched_product_queries.get_children_by_parent_nm_id(parent_nm_id=nm_id)
             df = pd.DataFrame(
-                self.cm_utils.prepare_output(child_products=children)
+                self.cm_utils.prepare_output_children(child_products=children)
             )
             file_name = 'cached_files/' + str(the_product.nm_id) \
                         + '_' + \

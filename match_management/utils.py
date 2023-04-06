@@ -103,22 +103,30 @@ class MatchUtils(BaseUtils):
     async def prepare_output(products, the_product=False):
         output_data = []
         for product in products:
-            product = product.the_product if the_product else product.product
+            product_dict = product.the_product if the_product else product.product
 
-            price = product['detail'].get('salePriceU')
+            price = product_dict['detail'].get('salePriceU')
             if price:
                 price = int(price) // 100
 
             obj = {
-                'vendorCode': product['card'].get('vendor_code'),
-                'name': product['card'].get('imt_name'),
-                'article wb': product['card'].get('nm_id'),
-                'brand': product['detail'].get('brand'),
+                'vendorCode': product_dict['card'].get('vendor_code'),
+                'name': product_dict['card'].get('imt_name'),
+                'article wb': product_dict['card'].get('nm_id'),
+                'brand': product_dict['detail'].get('brand'),
                 'price': price,
-                'vendor': product['seller'].get('supplierName'),
-                'link': f"https://www.wildberries.ru/catalog/{product['card'].get('nm_id')}/detail.aspx?targetUrl=GP",
+                'vendor': product_dict['seller'].get('supplierName'),
             }
-
+            if the_product:
+                obj.update({
+                    'min_price': product.min_price,
+                    'rrc': product.rrc,
+                    'link': f"https://www.wildberries.ru/catalog/{product_dict['card'].get('nm_id')}/detail.aspx?targetUrl=GP",
+                })
+            else:
+                obj.update({
+                    'link': f"https://www.wildberries.ru/catalog/{product_dict['card'].get('nm_id')}/detail.aspx?targetUrl=GP",
+                })
             output_data.append(obj)
         return output_data
 

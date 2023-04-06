@@ -104,7 +104,7 @@ class MatchServices:
         ]
 
         print(len(products), 'before finding its identical')
-        products = products[:1000]
+        # products = products[:1000]
         products = await self.fill_products_by_its_by_identical(products=products)
         products = self.match_utils.remove_duplicate_nms(products=products)
 
@@ -199,6 +199,7 @@ class MatchServices:
             the_product = final_df['the_product'][index]
             min_price = final_df[price_column][index]
             min_price = None if pd.isna(min_price) else int(min_price)
+            print(min_price)
             the_products_to_be_saved = self.match_utils.prepare_matched_product(the_product=the_product, min_price=min_price)
             await self.matched_product_queries.save_or_update(the_product=the_products_to_be_saved)
 
@@ -234,6 +235,44 @@ class MatchServices:
             products_to_be_saved.append(matched_product)
 
         await self.matched_product_queries.save_in_db(products_to_be_saved, many=True)
+
+    async def manually_add_child_matches(
+            self, df: pd.DataFrame, the_product_column: str, child_product_column: str) -> None:
+
+        wb_standard_auth = self.pm_services.wb_api_utils.api_auth(settings.WB_STANDARD_API_TOKEN)
+
+        products_to_be_imported = await self.match_utils.get_detail_by_nms(
+            nms=[int(df[child_product_column][index]) for index in df.index])
+
+        products_to_be_imported = [
+            {'child_nm_id': product['card'].get('nm_id'), 'product': product}
+            for product in products_to_be_imported]
+
+        df = pd.merge(
+            df, pd.DataFrame(products_to_be_imported), how='inner', left_on=child_product_column, right_on='child_nm_id')
+
+        nms_to_be_removed_from_unmatched_products = []
+        children_to_be_saved = []
+
+        for index in df.index:
+            the_product_nm = int(df[the_product_column][index])
+            the_product = await self.matched_product_queries.get_product_by_nm(nm=the_product_nm)
+
+            if the_product is None:
+                print('the product not found')
+                continue
+            child = await self.match_utils.prepare_child_matched_products(
+                the_product=the_product, child_matched_products=[df['product'][index]])
+
+            children_to_be_saved += child
+            await self.child_matched_product_queries.resave_matched_product(
+                the_product=the_product, matched_products=child)
+
+            nms_to_be_removed_from_unmatched_products.append(int(df[child_product_column][index]))
+            await self.pm_services.update_price(the_product=the_product, wb_standard_auth=wb_standard_auth)
+
+        await self.child_matched_product_queries.get_or_create(child_matched_products=children_to_be_saved)
+        await self.product_queries.delete_by_nms(nms=nms_to_be_removed_from_unmatched_products)
 
     async def remove_from_child_matched_products(self, df: pd.DataFrame) -> None:
         wb_standard_auth = self.pm_services.wb_api_utils.api_auth(token=settings.WB_STANDARD_API_TOKEN)
@@ -277,41 +316,6 @@ class MatchServices:
         products = await self.match_utils.prepare_output(products=matched_products, the_product=True)
         return products
 
-    async def manually_add_child_matches(
-            self, df: pd.DataFrame, the_product_column: str, child_product_column: str) -> None:
-
-        wb_standard_auth = self.pm_services.wb_api_utils.api_auth(settings.WB_STANDARD_API_TOKEN)
-
-        products_to_be_imported = await self.match_utils.get_detail_by_nms(
-            nms=[int(df[child_product_column][index]) for index in df.index])
-
-        products_to_be_imported = [
-            {'child_nm_id': product['card'].get('nm_id'), 'product': product}
-            for product in products_to_be_imported]
-
-        df = pd.merge(
-            df, pd.DataFrame(products_to_be_imported), how='inner', left_on=child_product_column, right_on='child_nm_id')
-
-        nms_to_be_removed_from_unmatched_products = []
-        children_to_be_saved = []
-
-        for index in df.index:
-            the_product_nm = int(df[the_product_column][index])
-            the_product = await self.matched_product_queries.get_product_by_nm(nm=the_product_nm)
-
-            if the_product is None:
-                print('the product not found')
-                continue
-            child = await self.match_utils.prepare_child_matched_products(
-                the_product=the_product, child_matched_products=[df['product'][index]])
-
-            children_to_be_saved += child
-            await self.child_matched_product_queries.resave_matched_product(
-                the_product=the_product, matched_products=child)
-
-            nms_to_be_removed_from_unmatched_products.append(int(df[child_product_column][index]))
-            await self.pm_services.update_price(the_product=the_product, wb_standard_auth=wb_standard_auth)
-
-        await self.child_matched_product_queries.get_or_create(child_matched_products=children_to_be_saved)
-        await self.product_queries.delete_by_nms(nms=nms_to_be_removed_from_unmatched_products)
-
+    async def get_matched_products_by_brand_id(self, brand_id: int) -> list[dict]:
+        the_products = await self.matched_product_queries.get_matched_products_by_brand_id(brand_id=brand_id)
+        return await self.match_utils.prepare_output(products=the_products, the_product=True)

@@ -157,3 +157,17 @@ async def get_products_with_no_children():
                              media_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
                              headers={'Content-Disposition': f'attachment; filename="no_children_products.xlsx"'})
 
+
+@router.get('/get-matched-products-by_brand_id/{brand_id}/', tags=['match product utils'])
+async def get_matched_products_by_brand_id(brand_id: int):
+    products = await matched_services.get_matched_products_by_brand_id(brand_id=brand_id)
+    df = pd.DataFrame(products)
+
+    output = io.BytesIO()
+    writer = pd.ExcelWriter(output, engine='xlsxwriter')
+    df.to_excel(writer, index=False)
+    writer.save()
+
+    return StreamingResponse(io.BytesIO(output.getvalue()),
+                             media_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                             headers={'Content-Disposition': f'attachment; filename="products_{brand_id}.xlsx"'})

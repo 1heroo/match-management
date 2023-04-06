@@ -1,20 +1,14 @@
 import asyncio
 import json
 
+from core.utils import BaseUtils
 from match_management.models import ChildMatchedProduct, MatchedProduct
 from match_management.utils import make_head, make_tail
 import aiohttp
 from comparison_management.whs import whs as wh_dicts
 
 
-class CMUtils:
-
-    @staticmethod
-    async def make_get_request(url: str, headers: dict) -> dict:
-        async with aiohttp.ClientSession(trust_env=True, headers=headers) as session:
-            response = await session.get(url=url)
-            if response.status == 200:
-                return json.loads(await response.text())
+class CMUtils(BaseUtils):
 
     async def get_product_data(self, article: int) -> dict:
         card_url = make_head(int(article)) + make_tail(str(article), 'ru/card.json')
@@ -219,7 +213,7 @@ class CMUtils:
         return sorted(unique_output, key=lambda item: item.get('price'))
 
     @staticmethod
-    def prepare_output(child_products: list[ChildMatchedProduct]) -> list[dict]:
+    def prepare_output_children(child_products: list[ChildMatchedProduct]) -> list[dict]:
         output_data = []
         for child in child_products:
             output_data.append({
@@ -231,3 +225,4 @@ class CMUtils:
                 'link': f'https://www.wildberries.ru/catalog/{child.nm_id}/detail.aspx?targetUrl=MI'
             })
         return sorted(output_data, key=lambda item: item.get('price'))
+
