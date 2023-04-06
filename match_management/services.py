@@ -149,7 +149,11 @@ class MatchServices:
         output_data = []
         tasks = []
         for index, product in enumerate(products):
-            task = asyncio.create_task(self.match_utils.get_identical(article=product['card']['nm_id']))
+            article = product['card'].get('nm_id')
+            if article is None:
+                continue
+
+            task = asyncio.create_task(self.match_utils.get_identical(article=article))
             tasks.append(task)
 
             if index % 50 == 0:
