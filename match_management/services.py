@@ -102,11 +102,11 @@ class MatchServices:
             the_product.the_product for the_product in
             await self.matched_product_queries.fetch_all()
         ]
+
         print(len(products), 'before finding its identical')
         products = products[:1000]
         products = await self.fill_products_by_its_by_identical(products=products)
         print(len(products), 'after finding its identical')
-
         for the_product in the_products:
             article = the_product['card'].get('nm_id')
             if article is None:
@@ -165,10 +165,12 @@ class MatchServices:
         output_data += await asyncio.gather(*tasks, return_exceptions=True)
         output_data = [item for item in output_data if not isinstance(item, Exception) or item is not None]
 
+        identical_nms = []
         for item in output_data:
             if isinstance(item, list):
-                products += item
-        return products
+                identical_nms += item
+        identical_with_detail = await self.match_utils.get_detail_by_nms(nms=identical_nms)
+        return products + identical_with_detail
 
     async def aggregate_data_management(self, brand_ids: list[int]):
         products = await self.match_utils.get_products(brand_ids)
