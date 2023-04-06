@@ -118,6 +118,7 @@ class MatchServices:
             the_product = self.match_utils.prepare_matched_product(the_product=the_product)
             the_product = await self.matched_product_queries.save_or_update(the_product=the_product)
 
+            print(the_product.nm_id)
             matched_products = await self.match_utils.prepare_child_matched_products(
                 child_matched_products=matched, the_product=the_product)
 
