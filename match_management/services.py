@@ -133,7 +133,7 @@ class MatchServices:
 
     async def find_matches_to_the_product(self, the_product, products=None) -> tuple:
         output_data = []
-        products = await self.match_utils.check_stocks(products=products)
+        # products = await self.match_utils.check_stocks(products=products)
 
         # FIRST LEVEL
         matched, products = self.filter_lvl.first_lvl(the_product=the_product, products=products)
