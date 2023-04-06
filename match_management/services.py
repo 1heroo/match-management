@@ -106,6 +106,8 @@ class MatchServices:
         print(len(products), 'before finding its identical')
         products = products[:1000]
         products = await self.fill_products_by_its_by_identical(products=products)
+        products = self.match_utils.remove_duplicate_nms(products=products)
+
         print(len(products), 'after finding its identical')
         for the_product in the_products:
             article = the_product['card'].get('nm_id')

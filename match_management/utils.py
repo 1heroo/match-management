@@ -203,7 +203,7 @@ class MatchUtils(BaseUtils):
         unique = []
         checked = []
         for product in products:
-            article = product['card']['nm_id']
+            article = product['card'].get('nm_id')
 
             if article not in checked:
                 unique.append(product)
