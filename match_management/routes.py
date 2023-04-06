@@ -94,6 +94,7 @@ async def import_min_prices(sheet_name: str = None, file: bytes = File()):
 
     article_column = xlsx_utils.find_article_column(df=df)
     price_column = xlsx_utils.find_min_price_column(df=df)
+    print(article_column, price_column)
     if price_column is None or article_column is None:
         return JSONResponse(content={'message': 'Не правильная струкутра в экзель'},
                             status_code=status.HTTP_400_BAD_REQUEST)
