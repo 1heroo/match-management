@@ -103,6 +103,7 @@ class MatchServices:
             await self.matched_product_queries.fetch_all()
         ]
         print(len(products), 'before finding its identical')
+        products = products[:1000]
         products = await self.fill_products_by_its_by_identical(products=products)
         print(len(products), 'after finding its identical')
 
