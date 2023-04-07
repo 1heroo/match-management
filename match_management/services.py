@@ -199,7 +199,6 @@ class MatchServices:
             the_product = final_df['the_product'][index]
             min_price = final_df[price_column][index]
             min_price = None if pd.isna(min_price) else int(min_price)
-            print(min_price)
             the_products_to_be_saved = self.match_utils.prepare_matched_product(the_product=the_product, min_price=min_price)
             await self.matched_product_queries.save_or_update(the_product=the_products_to_be_saved)
 
@@ -279,7 +278,7 @@ class MatchServices:
 
         the_product = None
         for index in df.index:
-            nm_id = df['article wb'][index]
+            nm_id = df['Артикул WB'][index]
             child_matched_product = await self.child_matched_product_queries.get_child_by_nm_id(nm_id=nm_id)
 
             if child_matched_product is not None:
@@ -294,7 +293,7 @@ class MatchServices:
 
         for index in df.index:
             child_matched_product = await self.child_matched_product_queries.get_child_by_nm_id(
-                nm_id=df['article wb'][index])
+                nm_id=df['Артикул WB'][index])
             if child_matched_product:
                 unmatched_products_to_be_saved.append(child_matched_product.product)
                 await self.child_matched_product_queries.delete_instance(instance=child_matched_product)
