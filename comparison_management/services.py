@@ -48,7 +48,7 @@ class CMServices:
             suitable_children = await self.cm_utils.not_profitable_check_prices_and_prepare_for_output(
                 the_product=the_product, children=child_matched_products)
             if suitable_children:
-                file_name = 'cached_files/' + str(the_product.nm_id) + f' {the_product.brand}'\
+                file_name = 'cached_files/' + f'{the_product.brand} ' + str(the_product.nm_id)\
                             + '_' +\
                             str(datetime.date.today()) + '.xlsx'
 
@@ -67,7 +67,7 @@ class CMServices:
             suitable_children = await self.cm_utils.profitable_check_prices_and_prepare_for_output(
                 the_product=the_product, children=child_matched_products)
             if suitable_children:
-                file_name = 'cached_files/' + str(the_product.nm_id) + f' {the_product.brand}'\
+                file_name = 'cached_files/' + f'{the_product.brand} ' + str(the_product.nm_id)\
                             + '_' + \
                             str(datetime.date.today()) + '.xlsx'
 
