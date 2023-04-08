@@ -39,6 +39,9 @@ class CMServices:
 
         cached_files = []
         for the_product in the_products:
+            if the_product.price is None:
+                continue
+
             child_matched_products = await self.child_matched_product_queries.get_children_by_parent_id(
                 parent_id=the_product.id)
 
@@ -123,10 +126,17 @@ class CMServices:
 
         for index in df.index:
             nm_id = df['Артикул WB'][index]
+            brand = df['Бренд'][index]
+            category = df['Предмет'][index]
+            vendor_code = df['Артикул продавца'][index]
+
             matched_product = await self.matched_product_queries.get_product_by_nm(nm=nm_id)
             if matched_product is None:
                 output_data.append({
-                    'Артикул WB': nm_id
+                    'Артикул WB': nm_id,
+                    'Артикул продавца': vendor_code,
+                    'Бренд': brand,
+                    'Предмет': category
                 })
 
         return output_data
