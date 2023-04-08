@@ -162,8 +162,6 @@ class CMUtils(BaseUtils):
 
     async def not_profitable_check_prices_and_prepare_for_output(
             self, the_product: MatchedProduct, children: list[ChildMatchedProduct]) -> list[dict]:
-        if not children:
-            return []
 
         output_data = [{
                 'article wb': the_product.nm_id,
@@ -176,6 +174,9 @@ class CMUtils(BaseUtils):
 
         children = self.check_stocks(products=children)
         children = [child for child in children if child.price is not None]
+
+        if not children:
+            return  []
 
         min_product = min(children, key=lambda item: item.price)
 
