@@ -187,9 +187,9 @@ class MatchUtils(BaseUtils):
     @staticmethod
     async def check_stocks(products):
         output_data = []
-        for the_product in products:
+        for product in products:
             qty = 0
-            sizes = the_product['detail'].get('sizes')
+            sizes = product['detail'].get('sizes')
             if not sizes:
                 continue
 
@@ -199,10 +199,10 @@ class MatchUtils(BaseUtils):
                     continue
 
                 for stock in stocks:
-                    qty += stock.get('qty')
+                    qty += stock.get('qty', 0)
 
             if qty > 0:
-                output_data.append(the_product)
+                output_data.append(product)
 
         return output_data
 

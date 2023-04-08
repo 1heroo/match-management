@@ -10,6 +10,30 @@ from comparison_management.whs import whs as wh_dicts
 
 class CMUtils(BaseUtils):
 
+    @staticmethod
+    def check_stocks(products: list[ChildMatchedProduct]) -> list[ChildMatchedProduct]:
+        output_data = []
+        for product in products:
+            product_json = product.product
+
+            qty = 0
+            sizes = product_json['detail'].get('sizes')
+            if not sizes:
+                continue
+
+            for size in sizes:
+                stocks = size.get('stocks')
+                if not stocks:
+                    continue
+
+                for stock in stocks:
+                    qty += stock.get('qty', 0)
+
+            if qty > 0:
+                output_data.append(product)
+
+        return output_data
+
     async def get_product_data(self, article: int) -> dict:
         card_url = make_head(int(article)) + make_tail(str(article), 'ru/card.json')
         obj = {}
@@ -136,9 +160,8 @@ class CMUtils(BaseUtils):
             output_data.append(obj)
         return output_data
 
-    @staticmethod
     async def not_profitable_check_prices_and_prepare_for_output(
-            the_product: MatchedProduct, children: list[ChildMatchedProduct]) -> list[dict]:
+            self, the_product: MatchedProduct, children: list[ChildMatchedProduct]) -> list[dict]:
         if not children:
             return []
 
@@ -150,6 +173,8 @@ class CMUtils(BaseUtils):
                 'price': the_product.price,
                 'link': f'https://www.wildberries.ru/catalog/{the_product.nm_id}/detail.aspx?targetUrl=MI'
             }]
+
+        children = self.check_stocks(products=children)
         children = [child for child in children if child.price is not None]
 
         min_product = min(children, key=lambda item: item.price)

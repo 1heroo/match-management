@@ -40,7 +40,6 @@ class PMServices:
             return
 
         child_matched_products_json = [child_matched_product.product for child_matched_product in child_matched_products]
-
         child_matched_products_json = await self.match_utils.check_stocks(products=child_matched_products_json)
 
         if not child_matched_products_json:
@@ -57,9 +56,6 @@ class PMServices:
             my_price /= 100
             min_price /= 100
 
-        print('my price', my_price)
-        print('min price', min_price)
-
         if the_product.min_price is None:
             return
 
@@ -70,14 +66,13 @@ class PMServices:
             )
         else:
             calculated_price = the_product.min_price
-        print(calculated_price)
+        print(the_product.nm_id, calculated_price)
         extended = the_product_json['detail'].get('extended')
         if not extended:
             return
         price_before_discount = await self.pm_utils.calculate_back_price(
             price=calculated_price, clientSale=extended.get('clientSale', 0), basicSale=extended.get('basicSale'))
 
-        print(price_before_discount)
         await self.wb_api_utils.update_prices(
             prices=[{
                 'nmId': the_product.nm_id,
