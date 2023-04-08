@@ -67,6 +67,9 @@ class MatchUtils(BaseUtils):
             tasks.append(task)
             count += 1
 
+            if product.get('id') == 49683095:
+                print('\n\n\n\n\n\n')
+
             if count % 50 == 0:
                 print(count, 'product data')
                 output_data += await asyncio.gather(*tasks, return_exceptions=True)
@@ -134,6 +137,10 @@ class MatchUtils(BaseUtils):
     async def prepare_wb_products_for_saving(products):
         output_data = []
         for product in products:
+            if product.get('id') == 49683095:
+                print('\n\n\n\n\n\n')
+                print(product)
+
             output_data.append(Product(
                 nm_id=product['card'].get('nm_id'),
                 product=product

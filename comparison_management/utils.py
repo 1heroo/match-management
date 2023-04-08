@@ -176,7 +176,7 @@ class CMUtils(BaseUtils):
         children = [child for child in children if child.price is not None]
 
         if not children:
-            return  []
+            return []
 
         min_product = min(children, key=lambda item: item.price)
 
