@@ -104,7 +104,6 @@ class MatchServices:
         ]
 
         print(len(products), 'before finding its identical')
-        # products = products[:1000]
         products = await self.fill_products_by_its_by_identical(products=products)
         products = self.match_utils.remove_duplicate_nms(products=products)
 
@@ -177,7 +176,18 @@ class MatchServices:
 
     async def aggregate_data_management(self, brand_ids: list[int]):
         products = await self.match_utils.get_products(brand_ids)
-        prepared_for_saving_products = await self.match_utils.prepare_wb_products_for_saving(products=products)
+        nm_ids = [
+            product.nm_id for product in
+            await self.product_queries.fetch_all() + \
+            await self.matched_product_queries.fetch_all() + \
+            await self.child_matched_product_queries.fetch_all()
+        ]
+        nm_ids = self.match_utils.remove_duplicate_nms_aggregated_products(products=products, nm_ids=nm_ids)
+        saved_products = await self.match_utils.get_detail_by_nms(nms=nm_ids)
+
+        prepared_for_saving_products = await self.match_utils.prepare_wb_products_for_saving(
+            products=products + saved_products)
+
         await self.product_queries.save_or_update(products=prepared_for_saving_products)
 
     async def import_my_products(self, df: pd.DataFrame, article_column: str, price_column: str) -> None:

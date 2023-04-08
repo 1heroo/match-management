@@ -67,9 +67,6 @@ class MatchUtils(BaseUtils):
             tasks.append(task)
             count += 1
 
-            if product.get('id') == 49683095:
-                print('\n\n\n\n\n\n')
-
             if count % 50 == 0:
                 print(count, 'product data')
                 output_data += await asyncio.gather(*tasks, return_exceptions=True)
@@ -224,6 +221,11 @@ class MatchUtils(BaseUtils):
                 unique.append(product)
                 checked.append(article)
         return unique
+
+    @staticmethod
+    def remove_duplicate_nms_aggregated_products(products: list[dict], nm_ids: list[int]) -> list[int]:
+        product_nm_ids = [product['card'].get('nm_id') for product in products]
+        return [nm_id for nm_id in nm_ids if nm_id not in product_nm_ids]
 
 
 def make_head(article: int):
