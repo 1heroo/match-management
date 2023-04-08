@@ -150,7 +150,7 @@ class CMUtils(BaseUtils):
                 'price': the_product.price,
             }]
         min_product = min(children, key=lambda item: item.price)
-
+        print(min_product)
         if min_product.price >= the_product.price:
             return []
 

@@ -22,7 +22,7 @@ async def get_characteristics(article_wb: int):
 
     output = io.BytesIO()
     writer = pd.ExcelWriter(output, engine='xlsxwriter')
-    df.to_excel(writer)
+    df.to_excel(writer, index=False)
     writer.save()
 
     return StreamingResponse(io.BytesIO(output.getvalue()),
@@ -30,13 +30,20 @@ async def get_characteristics(article_wb: int):
                              headers={'Content-Disposition': f'attachment; filename="characteristics.xlsx"'})
 
 
-@router.get('get-not-profitable-products/{brand_id}/')
-async def get_not_profitable_products(brand_id: int):
-    cached_files = await cm_services.not_profitable_management(brand_id=brand_id)
+@router.get('/get-not-profitable-products/')
+async def get_not_profitable_products():
+    cached_files = await cm_services.not_profitable_management()
     return xlsx_utils.zip_response(filenames=cached_files, zip_filename='not-profitable-products.zip')
 
 
-@router.get('get-profitable-products/{brand_id}/')
+@router.get('/get-not-profitable-products/{brand_id}/')
+async def get_not_profitable_products_by_brand_id(brand_id: int):
+    cached_files = await cm_services.not_profitable_management(brand_id=brand_id)
+    return xlsx_utils.zip_response(
+        filenames=cached_files, zip_filename=f'not-profitable-products_by_brand_id {brand_id}.zip')
+
+
+@router.get('/get-profitable-products/{brand_id}/')
 async def get_profitable_products(brand_id: int):
     cached_files = await cm_services.profitable_management(brand_id=brand_id)
     return xlsx_utils.zip_response(filenames=cached_files, zip_filename='profitable-products.zip')
@@ -53,3 +60,20 @@ async def get_children_by_articles(file: bytes = File()):
     df = pd.read_excel(file)
     cached_files = await cm_services.get_children_by_articles_wb(df=df)
     return xlsx_utils.zip_response(filenames=cached_files, zip_filename='child_products.zip')
+
+
+@router.post('/get-non-existent-articles/')
+async def get_non_existent_articles(file: bytes = File()):
+    df = pd.read_excel(file)
+    data = await cm_services.get_non_existent_articles(df=df)
+
+    df = pd.DataFrame(data)
+
+    output = io.BytesIO()
+    writer = pd.ExcelWriter(output, engine='xlsxwriter')
+    df.to_excel(writer, index=False)
+    writer.save()
+
+    return StreamingResponse(io.BytesIO(output.getvalue()),
+                             media_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                             headers={'Content-Disposition': f'attachment; filename="non_existent_products.xlsx"'})

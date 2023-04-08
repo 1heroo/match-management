@@ -30,13 +30,17 @@ class CMServices:
         products = await self.cm_utils.prepare_chars_for_output(products=products_json)
         return products
 
-    async def not_profitable_management(self, brand_id: int) -> list[str]:
-        the_products = await self.matched_product_queries.get_matched_products_by_brand_id(brand_id=brand_id)
+    async def not_profitable_management(self, brand_id: int = None) -> list[str]:
+
+        if brand_id is None:
+            the_products = await self.matched_product_queries.fetch_all()
+        else:
+            the_products = await self.matched_product_queries.get_matched_products_by_brand_id(brand_id=brand_id)
 
         cached_files = []
         for the_product in the_products:
-            child_matched_products = await self.child_matched_product_queries.get_children_by_parent_nm_id(
-                parent_nm_id=the_product.nm_id)
+            child_matched_products = await self.child_matched_product_queries.get_children_by_parent_id(
+                parent_id=the_product.id)
 
             suitable_children = await self.cm_utils.not_profitable_check_prices_and_prepare_for_output(
                 the_product=the_product, children=child_matched_products)
@@ -113,3 +117,17 @@ class CMServices:
             df.to_excel(file_name, index=False)
             cached_files.append(file_name)
         return cached_files
+
+    async def get_non_existent_articles(self, df: pd.DataFrame) -> list[dict]:
+        output_data = []
+
+        for index in df.index:
+            nm_id = df['Артикул WB'][index]
+            matched_product = await self.matched_product_queries.get_product_by_nm(nm=nm_id)
+            if matched_product is None:
+                output_data.append({
+                    'Артикул WB': nm_id
+                })
+
+        return output_data
+
