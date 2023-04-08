@@ -178,7 +178,7 @@ class MatchServices:
         products = await self.match_utils.get_products(brand_ids)
         nm_ids = [
             product.nm_id for product in
-            await self.product_queries.fetch_all() + \
+            # await self.product_queries.fetch_all() + \
             await self.matched_product_queries.fetch_all() + \
             await self.child_matched_product_queries.fetch_all()
         ]
