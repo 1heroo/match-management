@@ -148,6 +148,7 @@ class CMUtils(BaseUtils):
                 'vendor': 'Blandova',
                 'brand': the_product.brand,
                 'price': the_product.price,
+                'link': f'https://www.wildberries.ru/catalog/{the_product.nm_id}/detail.aspx?targetUrl=MI'
             }]
         children = [child for child in children if child.price is not None]
 
@@ -163,6 +164,7 @@ class CMUtils(BaseUtils):
                 'vendor': child.vendor_name,
                 'brand': child.brand,
                 'price': child.price,
+                'link': f'https://www.wildberries.ru/catalog/{child.nm_id}/detail.aspx?targetUrl=MI'
             })
 
         articles = []
@@ -188,6 +190,7 @@ class CMUtils(BaseUtils):
                 'vendor': 'Blandova',
                 'brand': the_product.brand,
                 'price': the_product.price,
+                'link': f'https://www.wildberries.ru/catalog/{the_product.nm_id}/detail.aspx?targetUrl=MI',
             }]
         min_product = min(children, key=lambda item: item.price)
 
@@ -201,6 +204,7 @@ class CMUtils(BaseUtils):
                 'vendor': child.vendor_name,
                 'brand': child.brand,
                 'price': child.price,
+                'link': f'https://www.wildberries.ru/catalog/{child.nm_id}/detail.aspx?targetUrl=MI'
             })
 
         articles = []
