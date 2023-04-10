@@ -209,6 +209,9 @@ class CMUtils(BaseUtils):
         children = [child for child in children if child.price]
         children = self.check_stocks(products=children)
 
+        if not children:
+            return {}
+
         min_child = min(children, key=lambda child: child.price)
 
         if the_product.price < min_child.price:
