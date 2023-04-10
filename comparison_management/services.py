@@ -106,7 +106,7 @@ class CMServices:
                 if not child_matched_products:
                     child_matched_products.append(the_product)
 
-                file_name = 'cached_files/' + str(the_product.nm_id) \
+                file_name = 'cached_files/' + f'{the_product.brand} {the_product.nm_id}' \
                             + '_' + \
                             str(datetime.date.today()) + '.xlsx'
                 df = pd.DataFrame(

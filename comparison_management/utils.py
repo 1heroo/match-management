@@ -204,10 +204,11 @@ class CMUtils(BaseUtils):
 
         return sorted(unique_output, key=lambda item: item.get('price'))
 
-    @staticmethod
     async def not_profitable_matched_products_prepare_recommended_prices(
-            the_product: MatchedProduct, children: list[ChildMatchedProduct]) -> dict:
+            self, the_product: MatchedProduct, children: list[ChildMatchedProduct]) -> dict:
         children = [child for child in children if child.price]
+        children = self.check_stocks(products=children)
+
         min_child = min(children, key=lambda child: child.price)
 
         if the_product.price < min_child.price:
