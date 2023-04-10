@@ -246,6 +246,7 @@ class CMUtils(BaseUtils):
                 'price': the_product.price,
                 'link': f'https://www.wildberries.ru/catalog/{the_product.nm_id}/detail.aspx?targetUrl=MI',
             }]
+        children = [child for child in children if child.price]
         min_product = min(children, key=lambda item: item.price)
 
         if min_product.price != the_product.price:
