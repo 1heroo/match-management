@@ -3,7 +3,8 @@ import os
 import zipfile
 
 import pandas as pd
-from starlette.responses import Response
+from starlette.responses import Response, StreamingResponse
+import typing
 
 
 class XlsxUtils:
@@ -27,6 +28,18 @@ class XlsxUtils:
             'Content-Disposition': f'attachment;filename={zip_filename}'
         })
         return resp
+
+    @staticmethod
+    def streaming_response(sequence: typing.Sequence, file_name: str) -> StreamingResponse:
+        df = pd.DataFrame(sequence)
+        output = io.BytesIO()
+        writer = pd.ExcelWriter(output, engine='xlsxwriter')
+        df.to_excel(writer, index=False)
+        writer.save()
+
+        return StreamingResponse(io.BytesIO(output.getvalue()),
+                                 media_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                                 headers={'Content-Disposition': f'attachment; filename="{file_name}.xlsx"'})
 
     def handle_xlsx(self, df: pd.DataFrame, file_name) -> pd.DataFrame:
         index = self.search_table_begin(df=df)

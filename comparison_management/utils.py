@@ -205,6 +205,30 @@ class CMUtils(BaseUtils):
         return sorted(unique_output, key=lambda item: item.get('price'))
 
     @staticmethod
+    async def not_profitable_matched_products_prepare_recommended_prices(
+            the_product: MatchedProduct, children: list[ChildMatchedProduct]) -> dict:
+        children = [child for child in children if child.price]
+        min_child = min(children, key=lambda child: child.price)
+
+        if the_product.price < min_child.price:
+            return {}
+
+        obj = {
+            'Артикул WB': the_product.nm_id,
+            'Бренд': the_product.brand,
+            'Вендор Код': the_product.vendor_code,
+            'Текущая цена на клиентском WB': the_product.price,
+            'Текущая минимальная цена': the_product.min_price,
+            'Рекомендуемая минимальная цена (10%)': round(min_child.price - (min_child.price / 10), 1),
+            'Артикул WB сопоставленного минимального продукта': min_child.nm_id,
+            'Бренд сопоставленного минимального продукта': min_child.brand,
+            'Вендор код сопоставленного минимального продукта': min_child.vendor_code,
+            'Продавец сопоставленного минимального продукта': min_child.vendor_name,
+            'Текущая цена сопоставленного минимального продукта': min_child.price,
+        }
+        return obj
+
+    @staticmethod
     async def profitable_check_prices_and_prepare_for_output(
             the_product: MatchedProduct, children: list[ChildMatchedProduct]) -> list[dict]:
         if not children:

@@ -43,6 +43,12 @@ async def get_not_profitable_products_by_brand_id(brand_id: int):
         filenames=cached_files, zip_filename=f'not-profitable-products_by_brand_id {brand_id}.zip')
 
 
+@router.get('/get-recommended-min-price/')
+async def get_recommended_min_price():
+    sequence = await cm_services.get_recommended_min_prices()
+    return xlsx_utils.streaming_response(sequence=sequence, file_name='Recommended_min_prices')
+
+
 @router.get('/get-profitable-products/{brand_id}/')
 async def get_profitable_products(brand_id: int):
     cached_files = await cm_services.profitable_management(brand_id=brand_id)

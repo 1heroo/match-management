@@ -76,6 +76,23 @@ class CMServices:
                 cached_files.append(file_name)
         return cached_files
 
+    async def get_recommended_min_prices(self):
+        the_products = await self.matched_product_queries.fetch_all()
+
+        output_data = []
+        for the_product in the_products:
+            if the_product.price is None:
+                continue
+
+            child_matched_products = await self.child_matched_product_queries.get_children_by_parent_id(
+                parent_id=the_product.id)
+
+            recommended_price_row = await self.cm_utils.not_profitable_matched_products_prepare_recommended_prices(
+                the_product=the_product, children=child_matched_products)
+            if recommended_price_row:
+                output_data.append(recommended_price_row)
+        return output_data
+
     async def get_child_less_than_three(self) -> list[str]:
         matched_products = await self.matched_product_queries.fetch_all()
 
